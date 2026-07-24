@@ -1,0 +1,47 @@
+---
+title: "PROJECT TITLE"
+description: "One sentence — the question this answered and why it mattered."
+date: 2026-01-01
+categories: [Report, Code, Academic]
+image: images/PROJECT-SLUG-thumb.png
+---
+
+<!--
+USE THIS TEMPLATE WHEN: you have both a write-up AND code worth showing.
+This is the strongest project-page format — prefer it whenever you can.
+
+Two ways to include code:
+  (a) Paste real snippets as static code blocks (```python / ```r), like
+      below — always works, no setup needed.
+  (b) If you have the ORIGINAL .qmd/.Rmd source (not just a PDF export),
+      copy that file in directly instead of retyping — Quarto will
+      re-execute it and you get live output, not a static transcription.
+      See _templates/template-external-qmd.qmd for that path.
+-->
+
+## The problem
+
+<!-- 2-3 sentences: what question or decision was this analysis for? -->
+
+## Approach
+
+<!-- Method, data, what you actually built. If this was a team project,
+be explicit about YOUR specific contribution vs the team's — same honesty
+standard you'd use on a CV. -->
+
+## Key findings
+
+<!-- Your sharpest 2-4 insights. Lead with the finding, not the process. -->
+
+![](images/PROJECT-SLUG-chart-1.png)
+
+## Code
+
+```python
+# Replace with a real, representative snippet — not boilerplate.
+# 1-2 short snippets that show your actual analytical thinking beat
+# pasting the whole script.
+```
+
+- [Full source on GitHub](https://github.com/YOUR-GITHUB-USERNAME/PROJECT-SLUG)
+- [Full report (PDF)](../files/PROJECT-SLUG-report.pdf)

@@ -1,0 +1,56 @@
+---
+title: "Hotel Booking Cancellation & Revenue Analysis"
+description: "Identifying what drives cancellations and how booking behaviour differs by country, to inform hotel marketing strategy."
+date: 2026-02-03
+categories: [Report, Code, Academic, R, tidyverse, Data Visualisation]
+image: images/hotel-analysis-thumb.png   # TODO
+---
+
+<!--
+You have the full R code and every chart already, visible in your assignment
+PDF (Assignment_2_final_.pdf) — this is mostly a transcription/cleanup job,
+not new work. If you still have the original .Rmd/.qmd file, use that
+instead of retyping from the PDF.
+-->
+
+## The problem
+
+Which factors actually drive booking cancellations, and how does customer
+behaviour — lead time, stay length, pricing sensitivity — differ across a
+hotel's key source markets? The goal: turn that into concrete, country-level
+marketing recommendations rather than a generic dashboard.
+
+## Approach
+
+<!-- TODO: briefly describe the dataset (hotels.csv — City Hotel vs Resort
+Hotel bookings) and the analysis flow: cancellation-rate drivers first
+(lead time, special requests, booking changes), then a deeper country-level
+segmentation of the top 5 source markets per hotel. -->
+
+## Key findings
+
+<!--
+TODO: your strongest 3-4 findings, e.g.:
+- City Hotel cancellation rate (41.7%) vs Resort Hotel (27.8%)
+- Special requests strongly predict lower cancellation (47.7% -> 21.7%)
+- Lead time, stay length, and price positioning vary meaningfully by country
+  -> different markets warrant different campaign timing
+-->
+
+![](images/hotel-cancellation-by-requests.png)
+![](images/hotel-country-marketing.png)
+
+## Code
+
+```r
+# Example: cancellation rate by special requests
+data |> mutate(has_special_req = if_else(total_of_special_requests > 0, 1, 0)) |>
+  group_by(has_special_req) |>
+  summarise(cancel_rate = mean(is_canceled, na.rm = TRUE))
+```
+
+<!-- TODO: replace with 2-3 snippets that best represent your actual
+analytical thinking, not just data-wrangling boilerplate -->
+
+- [Full report (PDF)](files/hotel-booking-report.pdf) <!-- TODO: add PDF to /files -->
+- [Source on GitHub](https://github.com/YOUR-GITHUB-USERNAME/hotel-booking-analysis) <!-- TODO -->

@@ -1,0 +1,49 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Adam Hrehovcik"
+  description: "Data & Business Analytics — projects, reports, and code"
+  site-url: "https://adamhrehovcik.github.io"   # TODO: update to your actual GitHub Pages URL or custom domain
+
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: projects.qmd
+        text: Projects
+      - href: about.qmd
+        text: About
+    right:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/adam-hrehovcik/
+        aria-label: LinkedIn
+      - icon: github
+        href: https://github.com/YOUR-GITHUB-USERNAME   # TODO: update
+        aria-label: GitHub
+      - icon: envelope
+        href: mailto:adam.hrehovcik@gmail.com
+        aria-label: Email
+
+  page-footer:
+    left: "© 2026 Adam Hrehovcik"
+    right:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/adam-hrehovcik/
+      - icon: envelope
+        href: mailto:adam.hrehovcik@gmail.com
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: false
+    grid:
+      body-width: 850px
+    code-fold: true       # collapses code blocks by default on project pages — reader chooses to expand
+    code-tools: true       # adds a "view source" affordance
+    fig-align: center
+
+execute:
+  freeze: auto   # only re-runs code when the source .qmd changes — keeps rebuilds fast

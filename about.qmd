@@ -1,0 +1,41 @@
+---
+title: "About"
+page-layout: article
+toc: false
+---
+
+::: {.about-layout}
+
+<!-- TODO: add a headshot to /images/headshot.jpg and uncomment
+![](images/headshot.jpg){.about-photo}
+-->
+
+## Background
+
+<!--
+TODO: 2-3 short paragraphs. Suggested shape, not a template to fill word for
+word — write it in your own voice:
+
+1. Who you are + what you're doing now (MSc Business Analytics @ Imperial,
+   joining Revolut Sep 2026 as Graduate Operations Manager, GlobalHire).
+2. What kind of work you gravitate toward (the throughline across your
+   projects — e.g. turning messy data into a decision someone can act on).
+3. One sentence on background: Warwick BSc, EY, Smokestack, Sora Capital —
+   don't just restate the CV, say what you took from it.
+-->
+
+## Education
+
+**Imperial College London** — MSc Business Analytics (Sep 2025 – Aug 2026)
+Imperial Excellence Scholar
+
+**Warwick Business School** — BSc Management with Finance, First-Class Honours
+Ranked 3rd in graduating cohort
+
+## Elsewhere
+
+- [LinkedIn](https://www.linkedin.com/in/adam-hrehovcik/)
+- [GitHub](https://github.com/YOUR-GITHUB-USERNAME) <!-- TODO -->
+- [CV (PDF)](files/Adam_Hrehovcik_CV.pdf) <!-- TODO: drop your CV PDF into /files -->
+
+:::

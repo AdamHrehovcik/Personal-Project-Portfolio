@@ -1,0 +1,6 @@
+/.quarto/
+/_site/
+.DS_Store
+
+# NOTE: /docs/ is intentionally NOT ignored — it's the rendered output
+# GitHub Pages serves from (see README for the "Publishing" section).

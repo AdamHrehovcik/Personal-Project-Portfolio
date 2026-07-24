@@ -1,0 +1,43 @@
+---
+title: "Predicting Paper Success & Tracing the Spread of Computational Thinking"
+description: "Text analysis of 889K paper abstracts — citation prediction, semantic drift, and transfer learning across scientific disciplines."
+date: 2026-04-01   # TODO: confirm actual date
+categories: [Report, Code, Academic, Python, NLP, Embeddings, PCA]
+image: images/nlp-thumb.png   # TODO
+draft: true   # remove this line once the page is actually filled in
+---
+
+<!--
+NOTE: unlike the other three, you only have slides for this one — no
+notebook. Before this page is worth publishing, either:
+  (a) get the notebook from Ruben/Kacper/Tim/Vova (5-person team project),
+      since your specific contribution was the PCA & embeddings work, or
+  (b) skip this one for the portfolio — it's the most purely academic of
+      your projects (no business decision at the end), so it's optional
+      rather than essential, unlike the other three.
+`draft: true` above keeps this page out of the published site listing until
+you're ready — Quarto won't render/link it while draft is set.
+-->
+
+## The problem
+
+<!-- TODO -->
+
+## What I worked on
+
+<!--
+Your role was PCA on science-specific document embeddings (MiniLM,
+SPECTER2) to trace how scientific disciplines have semantically drifted
+toward computer science over six decades — interpreted via Ridge regression
+vocabulary projection, metadata correlation, and extreme document
+inspection. Be specific that this was your slice of a 5-person team project,
+same honesty standard as everywhere else.
+-->
+
+## Key findings
+
+<!-- TODO -->
+
+## Code
+
+- [Notebook on GitHub](https://github.com/YOUR-GITHUB-USERNAME/citation-prediction-nlp) <!-- TODO -->

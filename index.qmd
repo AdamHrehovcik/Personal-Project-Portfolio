@@ -1,0 +1,45 @@
+---
+title: ""
+page-layout: full
+toc: false
+---
+
+::: {.hero}
+
+# Adam Hrehovcik
+
+### Data & Business Analytics
+
+<!--
+TODO: 2-3 sentence intro. Keep it concrete, not generic — say what kind of
+problems you actually work on (e.g. "I build analyses and tools that turn
+messy data into decisions — pricing, demand forecasting, and customer
+behaviour, mostly in Python and R.") rather than a list of adjectives.
+-->
+
+I'm an MSc Business Analytics student at Imperial College London, currently
+joining Revolut as a Graduate Operations Manager. This site collects the
+analytical projects and reports I've built — the full write-ups, the code
+behind them, and what I actually found.
+
+<div class="hero-buttons">
+[View Projects →](projects.qmd){.btn-hero}
+[Download CV](files/Adam_Hrehovcik_CV.pdf){.btn-hero .btn-hero-outline}
+[LinkedIn ↗](https://www.linkedin.com/in/adam-hrehovcik/){.btn-hero .btn-hero-outline target="_blank"}
+</div>
+
+:::
+
+<!--
+TODO: consider a short "Featured" section here — 2-3 project cards for your
+strongest work (e.g. retail dashboard, hotel booking analysis) so a visitor
+doesn't have to click through to /projects to see your best material.
+Quarto listing shortcode example:
+
+## Featured
+
+::: {#featured-listing}
+:::
+
+with a matching listing block in _quarto.yml or a separate featured.qmd
+-->

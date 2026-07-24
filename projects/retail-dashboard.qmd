@@ -1,0 +1,66 @@
+---
+title: "Retail AI Intelligence Suite"
+description: "A three-tab Streamlit dashboard for demand forecasting, pricing, and promotion decisions across a 44-SKU e-commerce catalogue."
+date: 2026-05-01
+categories: [Dashboard, Code, Academic, Python, Streamlit, Forecasting]
+image: images/retail-dashboard-thumb.png   # TODO: add a screenshot, ~800x450px
+---
+
+<!--
+This is your strongest source material — you have the full notebook AND the
+full Streamlit app code already. This page is the one worth finishing first.
+-->
+
+## The problem
+
+<!--
+TODO: 2-3 sentences. What decision was this dashboard meant to support?
+E.g. "A team project analysing 98 weeks of sales for a 44-SKU electronics
+catalogue, to answer: which SKUs need a price change, a promotion, or
+neither — and what's the expected impact?"
+-->
+
+## What I built
+
+<!--
+TODO: Be specific about YOUR role (technical coordinator — integrating
+teammates' forecasting/pricing/promotion models into one tool) vs. the
+team's modelling work, same honesty standard as the CV.
+-->
+
+- Demand forecasting (LightGBM) — 13-week forward forecast with prediction intervals
+- Price elasticity (SCAN*PRO log-linear regression) across 40 SKUs
+- Promotion effectiveness analysis
+- An AI-grounded Q&A layer (Llama 3.3 70B via Groq) for natural-language queries against the live data
+
+## Key findings
+
+<!--
+TODO: pull 2-3 of the sharpest insights from your presentation, e.g. the
+four-profile SKU segmentation (On Life Support / Cash Cows / Blind Spots /
+Growth Engines) and what action each implies.
+-->
+
+<!-- TODO: embed 1-2 screenshots of the actual dashboard here -->
+![](images/retail-dashboard-screenshot-1.png)
+
+## Code
+
+- [Full source on GitHub](https://github.com/YOUR-GITHUB-USERNAME/retail-ai-dashboard) <!-- TODO: push the repo, update link -->
+- [Analysis notebook](https://github.com/YOUR-GITHUB-USERNAME/retail-ai-dashboard/blob/main/ANALYSIS_FULL.ipynb) <!-- TODO -->
+
+<!--
+Optional: if you want actual runnable code visible ON this page (not just
+linked out), you can embed key snippets directly, e.g.:
+
+```python
+# forecasting_engine.py — signal detection thresholds
+DEFAULT_THRESHOLDS = {
+    'decline_pct': 0.15,   # cumulative drop > 15% over horizon
+    'swing_pct':   0.30,   # any single week-over-week move > 30%
+    'pi_ratio':    1.00,   # avg PI width > 1x the median forecast
+}
+```
+
+Use this sparingly — 1-2 illustrative snippets, not the whole codebase.
+-->

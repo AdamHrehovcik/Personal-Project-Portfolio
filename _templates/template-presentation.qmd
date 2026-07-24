@@ -1,0 +1,32 @@
+---
+title: "PROJECT TITLE"
+description: "One sentence — what the presentation covered and its takeaway."
+date: 2026-01-01
+categories: [Presentation, Academic]
+image: images/PROJECT-SLUG-thumb.png   # ideally a screenshot of slide 1
+---
+
+<!--
+USE THIS TEMPLATE WHEN: the deliverable is a slide deck (PDF), not a
+written report. Embedding beats linking — a visitor is far more likely to
+flip through slides inline than to download a PDF on faith.
+-->
+
+## The problem
+
+<!-- 2-3 sentences of context — a slide deck usually assumes a live
+audience, so add whatever spoken context is needed to make it stand alone. -->
+
+## Key takeaways
+
+<!-- Your sharpest 2-3 points, even if they're also on a slide. Redundancy
+here is fine — most visitors will skim this before opening the deck. -->
+
+## Slides
+
+<iframe src="../files/PROJECT-SLUG-slides.pdf" width="100%" height="600px" style="border:1px solid #ddd;"></iframe>
+
+[Open slides in a new tab ↗](../files/PROJECT-SLUG-slides.pdf){target="_blank"}
+
+<!-- Optional: if this presentation had underlying code/analysis behind it,
+add a "Code" section here too — see template-report-with-code.qmd. -->

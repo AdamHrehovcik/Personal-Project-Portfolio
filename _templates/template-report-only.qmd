@@ -1,0 +1,39 @@
+---
+title: "PROJECT TITLE"
+description: "One sentence — the question this answered and why it mattered."
+date: 2026-01-01   # publication/completion date, drives sort order
+categories: [Report, Academic]   # see _templates/README.md for the tag taxonomy
+image: images/PROJECT-SLUG-thumb.png
+---
+
+<!--
+USE THIS TEMPLATE WHEN: you have a written report/analysis but no code worth
+showing separately — e.g. the underlying work was in Excel, a BI tool
+without exportable code, or the code isn't representative of your thinking.
+If you DO have code, use _templates/template-report-with-code.qmd instead —
+showing real code is worth more than a narrative-only page whenever you can.
+-->
+
+## The problem
+
+<!-- 2-3 sentences: what question or decision was this analysis for? -->
+
+## Approach
+
+<!-- What data, what method, what you actually did. Keep this short —
+this section explains HOW, the findings section below is WHAT you found. -->
+
+## Key findings
+
+<!-- Your sharpest 2-4 insights. Lead with the finding, not the process. -->
+
+![](images/PROJECT-SLUG-chart-1.png)
+
+## Full report
+
+<!-- Prefer embedding the PDF inline over just linking it — much higher
+chance a visitor actually looks at it. -->
+
+<iframe src="../files/PROJECT-SLUG-report.pdf" width="100%" height="700px" style="border:1px solid #ddd;"></iframe>
+
+[Open full report in a new tab ↗](../files/PROJECT-SLUG-report.pdf){target="_blank"}
