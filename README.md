@@ -10,17 +10,22 @@ mostly copy-and-clean-up, not new writing.
 ```
 _quarto.yml         site config — nav, theme, output settings
 index.qmd           homepage
-projects.qmd         auto-generated grid of everything in /projects
+machine-learning.qmd  grid of ML/DS projects (explicit file list, see inside)
+business-analytics.qmd  grid of data/BA projects (same mechanism)
 about.qmd            bio page
 styles.css            light custom styling on top of the theme
 projects/
-  retail-dashboard.qmd
-  hotel-booking-analysis.qmd
-  bmw-pricing.qmd
-  citation-prediction-nlp.qmd   (marked draft — see note inside)
+  retail-dashboard.qmd          -> business-analytics.qmd
+  hotel-booking-analysis.qmd    -> business-analytics.qmd
+  citation-prediction-nlp.qmd   -> machine-learning.qmd (marked draft)
   images/             put project screenshots/charts here
 files/                put PDFs (CV, full reports) here
 ```
+
+Projects live in one flat `/projects` folder regardless of track — it's
+`machine-learning.qmd` and `business-analytics.qmd`'s `contents:` lists that
+decide which page a project shows up on. Adding a new project means editing
+one of those two files as well as dropping the `.qmd` into `/projects`.
 
 Every project `.qmd` has `<!-- TODO -->` comments marking what still needs
 your input — findings, screenshots, real links. Search the repo for `TODO`

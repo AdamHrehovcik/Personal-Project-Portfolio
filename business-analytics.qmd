@@ -1,0 +1,25 @@
+---
+title: "Data & Business Analytics"
+page-layout: full
+title-block-banner: false
+listing:
+  contents:
+    - projects/retail-dashboard.qmd
+    - projects/hotel-booking-analysis.qmd
+  type: grid
+  grid-columns: 3
+  image-height: 180px
+  fields: [image, title, description, categories, date]
+  sort: "date desc"
+  categories: true
+  sort-ui: true
+  filter-ui: true
+---
+
+<!--
+See machine-learning.qmd for why `contents:` is an explicit file list rather
+than the whole /projects folder.
+
+Add a new BA project = drop the .qmd into /projects as usual, then add its
+path to the `contents:` list above.
+-->

@@ -1,0 +1,17 @@
+[
+  {
+    "listing": "/business-analytics.html",
+    "items": [
+      "/projects/retail-dashboard.html",
+      "/projects/hotel-booking-analysis.html"
+    ]
+  },
+  {
+    "listing": "/machine-learning.html",
+    "items": [
+      "/projects/energy-forecasting.html",
+      "/projects/citation-prediction-nlp.html",
+      "/projects/movie-review-generator.html"
+    ]
+  }
+]

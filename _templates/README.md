@@ -43,4 +43,7 @@ above so the filter chips stay meaningful as the number of projects grows.
 5. If code exists: paste real snippets, or better, follow
    `bringing-in-existing-qmd.md` if the original source file is available
 6. Add any PDFs (report/slides) to `/files`
-7. `quarto preview` to check it renders and shows up on `/projects`
+7. Add the new file's path to the `contents:` list in `machine-learning.qmd`
+   or `business-analytics.qmd` (whichever track it belongs to) — projects
+   are no longer auto-discovered from the whole `/projects` folder
+8. `quarto preview` to check it renders and shows up on the right listing page

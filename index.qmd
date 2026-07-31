@@ -23,7 +23,8 @@ analytical projects and reports I've built — the full write-ups, the code
 behind them, and what I actually found.
 
 <div class="hero-buttons">
-[View Projects →](projects.qmd){.btn-hero}
+[Machine Learning Projects →](machine-learning.qmd){.btn-hero}
+[Business Analytics Projects →](business-analytics.qmd){.btn-hero}
 [Download CV](files/Adam_Hrehovcik_CV.pdf){.btn-hero .btn-hero-outline}
 [LinkedIn ↗](https://www.linkedin.com/in/adam-hrehovcik/){.btn-hero .btn-hero-outline target="_blank"}
 </div>

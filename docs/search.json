@@ -1,0 +1,226 @@
+[
+  {
+    "objectID": "projects/retail-dashboard.html",
+    "href": "projects/retail-dashboard.html",
+    "title": "Retail AI Intelligence Suite",
+    "section": "",
+    "text": "Team project. I was technical coordinator — integrating teammates’ demand forecasting, pricing, and promotion-effectiveness analyses into one dashboard — and also did a substantial share of the forecasting work itself (model selection, quadrant segmentation, forward forecasting)."
+  },
+  {
+    "objectID": "projects/retail-dashboard.html#the-problem",
+    "href": "projects/retail-dashboard.html#the-problem",
+    "title": "Retail AI Intelligence Suite",
+    "section": "The problem",
+    "text": "The problem\nA team project analysing 98 weeks of sales for a 44-SKU e-commerce electronics catalogue, split across three separate analytical strands (demand forecasting, pricing/promotion effectiveness) that started life as three separate notebooks. The question that mattered to the business: which SKUs need a price change, a promotion, or neither — and what’s the expected impact? Answering that meant putting all three analyses in front of the same person, looking at the same SKU, at the same time — not three PDFs a stakeholder has to cross-reference themselves."
+  },
+  {
+    "objectID": "projects/retail-dashboard.html#what-i-built",
+    "href": "projects/retail-dashboard.html#what-i-built",
+    "title": "Retail AI Intelligence Suite",
+    "section": "What I built",
+    "text": "What I built\nMy role was primarily technical coordination: taking teammates’ separate demand-forecasting, pricing, and promotion-effectiveness work and integrating it into a single three-tab Streamlit dashboard, rather than three disconnected deliverables. I also did a substantial share of the forecasting work directly — model selection across four candidates, the demand-quadrant segmentation, and the final 13-week forward forecast.\n\nTab 1 — Marketing Mix Overview: a C-level summary — 2×2 demand matrix, channel attribution, key demand signals.\nTab 2 — Demand Forecasting: SKU-level operational planning. LightGBM quantile regression producing a 13-week P50 forecast with 80% prediction intervals, per-SKU signal flags (declining / volatile / uncertain), and a catalogue-wide segmentation view.\nTab 3 — Pricing & Promotion: SCAN*PRO log-linear regression results for all 44 SKUs — per-SKU recommendation cards, elasticity distribution, a portfolio price simulator, and a four-quadrant strategic action matrix.\nAI layer: Llama 3.3 70B (via Groq) grounded in the live dashboard data for natural-language Q&A on both the forecasting and pricing tabs — additive only, every chart and recommendation works fully without it."
+  },
+  {
+    "objectID": "projects/retail-dashboard.html#key-findings",
+    "href": "projects/retail-dashboard.html#key-findings",
+    "title": "Retail AI Intelligence Suite",
+    "section": "Key findings",
+    "text": "Key findings\n\nPromotion strategy was undifferentiated, and the data shows it: 35.8% of all SKU-weeks were featured on the homepage, but only 16 of 44 SKUs (36%) show a statistically significant positive lift. 27 SKUs show no measurable return at all — feature-slot budget was being spent without regard to whether it worked.\nScarcity beats frequency. The highest-lift SKUs (38: +308%, 6: +189%, 21: +146%) share a profile of low baseline sales and infrequent featuring — customers respond to featuring as a credible signal precisely because it’s rare. Meanwhile SKUs 30 and 15, featured in 80 of 100 weeks, show essentially zero lift (SKU 30’s effect has p=0.94) — a textbook case of promotion fatigue.\nOne SKU actively loses sales when promoted. SKU 40 has a statistically significant negative effect (-53%, p=0.006) — flagged for investigation rather than continued featuring.\nPrice is the dominant demand driver, and two feature-importance methods disagreed about it. Random Forest importance ranked discount_pct above the absolute price level; Lasso’s standardised coefficients (which control for collinearity) showed price carrying the largest coefficient in the model by a wide margin. Where the two methods disagree, that’s a modelling question worth resolving, not a footnote — RF’s impurity-based importance systematically understates price here because it’s collinear with the lag features.\nLightGBM was chosen over a neural network despite a marginally worse MAE (62.7 vs. 61.5), because it natively supports quantile regression — P10/P50/P90 intervals without retraining — which the MLP can’t match without significant added complexity. Best relative accuracy (MAPE 50.8%) sealed it.\nForecast error concentrates in volatile SKUs, not evenly across the catalogue. Roughly 46% of SKUs have a coefficient of variation above 1.0, and a handful of them (25, 27, 30) account for most of the aggregate forecast error — a data reality the model can’t paper over, so those SKUs are flagged for wider intervals and manual review rather than automated action.\n\n\n\n\nSCAN*PRO promotion lift across all 44 SKUs (top) and the top 20 by incremental sales volume (bottom) — lift % and incremental units tell different stories, and both matter for different decisions.\n\n\n\n\n\nThree representative cases: a scarce high-responder (SKU 38, +308%), a promotion-fatigued non-responder (SKU 30, +1.3% on 80 featured weeks), and the one SKU with a significant negative effect (SKU 40, -53%).\n\n\n\n\n\n13-week forward LightGBM forecast for 12 representative SKUs across the four demand quadrants (High/Low demand × Stable/Volatile) — forecast intervals widen sharply in the volatile quadrants, reflecting genuine uncertainty rather than a modelling gap."
+  },
+  {
+    "objectID": "projects/retail-dashboard.html#live-dashboard",
+    "href": "projects/retail-dashboard.html#live-dashboard",
+    "title": "Retail AI Intelligence Suite",
+    "section": "Live dashboard",
+    "text": "Live dashboard"
+  },
+  {
+    "objectID": "projects/retail-dashboard.html#code",
+    "href": "projects/retail-dashboard.html#code",
+    "title": "Retail AI Intelligence Suite",
+    "section": "Code",
+    "text": "Code\nThe SCAN*PRO per-SKU regression — one OLS model per SKU, isolating the promotion effect from price and trend:\nfor sku_id in sorted(df[\"sku\"].unique()):\n    sku_df = df[df[\"sku\"] == sku_id].copy().dropna(subset=[\"log_sales\"])\n    sku_df = sku_df.sort_values(\"week\").reset_index(drop=True)\n    sku_df[\"trend\"] = np.arange(len(sku_df))\n\n    X = sm.add_constant(sku_df[[\"feat_int\", \"log_price\", \"trend\"]])\n    y = sku_df[\"log_sales\"]\n    model = sm.OLS(y, X).fit()\n\n    coef, pval = model.params[\"feat_int\"], model.pvalues[\"feat_int\"]\n    pct_lift   = (np.exp(coef) - 1) * 100\n    baseline   = sku_df[sku_df[\"feat_int\"] == 0][\"weekly_sales\"].mean()\n    incremental = baseline * (np.exp(coef) - 1) * sku_df[\"feat_int\"].sum()\nLightGBM quantile regression for the 13-week forward forecast — three models (P10/P50/P90) trained per run, refit on all available data:\nfor q, label in [(0.10, 'lower'), (0.50, 'median'), (0.90, 'upper')]:\n    m = lgb.LGBMRegressor(\n        objective='quantile', alpha=q,\n        n_estimators=n_trees, learning_rate=0.03, max_depth=6,\n        num_leaves=40, min_child_samples=10,\n        subsample=0.8, colsample_bytree=0.8,\n        reg_alpha=0.1, reg_lambda=0.1, random_state=42,\n    )\n    m.fit(X_all, y_all)\n    full_models[label] = m\n\nFull repo on GitHub"
+  },
+  {
+    "objectID": "projects/hotel-booking-analysis.html",
+    "href": "projects/hotel-booking-analysis.html",
+    "title": "Hotel Booking Cancellation & Revenue Analysis",
+    "section": "",
+    "text": "Which factors actually drive booking cancellations, and how does customer behaviour — lead time, stay length, pricing sensitivity — differ across a hotel’s key source markets? The goal: turn that into concrete, country-level marketing recommendations rather than a generic dashboard."
+  },
+  {
+    "objectID": "projects/hotel-booking-analysis.html#the-problem",
+    "href": "projects/hotel-booking-analysis.html#the-problem",
+    "title": "Hotel Booking Cancellation & Revenue Analysis",
+    "section": "",
+    "text": "Which factors actually drive booking cancellations, and how does customer behaviour — lead time, stay length, pricing sensitivity — differ across a hotel’s key source markets? The goal: turn that into concrete, country-level marketing recommendations rather than a generic dashboard."
+  },
+  {
+    "objectID": "projects/hotel-booking-analysis.html#approach",
+    "href": "projects/hotel-booking-analysis.html#approach",
+    "title": "Hotel Booking Cancellation & Revenue Analysis",
+    "section": "Approach",
+    "text": "Approach"
+  },
+  {
+    "objectID": "projects/hotel-booking-analysis.html#key-findings",
+    "href": "projects/hotel-booking-analysis.html#key-findings",
+    "title": "Hotel Booking Cancellation & Revenue Analysis",
+    "section": "Key findings",
+    "text": "Key findings"
+  },
+  {
+    "objectID": "projects/hotel-booking-analysis.html#code",
+    "href": "projects/hotel-booking-analysis.html#code",
+    "title": "Hotel Booking Cancellation & Revenue Analysis",
+    "section": "Code",
+    "text": "Code\n# Example: cancellation rate by special requests\ndata |&gt; mutate(has_special_req = if_else(total_of_special_requests &gt; 0, 1, 0)) |&gt;\n  group_by(has_special_req) |&gt;\n  summarise(cancel_rate = mean(is_canceled, na.rm = TRUE))\n\n\nFull report (PDF) \nSource on GitHub"
+  },
+  {
+    "objectID": "projects/citation-prediction-nlp.html",
+    "href": "projects/citation-prediction-nlp.html",
+    "title": "Predicting Paper Success & Tracing the Spread of Computational Thinking",
+    "section": "",
+    "text": "Team project — Ruben Jacquemyn, Kacper Ruszkiewicz, Tim Bakkenes, Vladimir (Vova) Drozdov, and myself. This write-up covers the full team’s findings for context but is scoped to my own contribution (semantic drift analysis) — see “What I worked on” below."
+  },
+  {
+    "objectID": "projects/citation-prediction-nlp.html#the-problem",
+    "href": "projects/citation-prediction-nlp.html#the-problem",
+    "title": "Predicting Paper Success & Tracing the Spread of Computational Thinking",
+    "section": "The problem",
+    "text": "The problem\nComputer science’s terminology and methods appear to be showing up more and more in other scientific fields — but is that actually true, and if so, does it help explain why some papers get cited far more than others? We analysed 889K paper abstracts (Semantic Scholar Open Research Corpus) across three angles: what textual features predict citation counts, how far other disciplines’ language has actually drifted toward CS’s over time, and whether citation-prediction features learned purely from CS papers transfer to other fields."
+  },
+  {
+    "objectID": "projects/citation-prediction-nlp.html#what-i-worked-on",
+    "href": "projects/citation-prediction-nlp.html#what-i-worked-on",
+    "title": "Predicting Paper Success & Tracing the Spread of Computational Thinking",
+    "section": "What I worked on",
+    "text": "What I worked on\nMy slice of the project was the semantic drift analysis: tracing how strongly each field’s language has moved toward computer science’s over six decades. I ran this on two independently-trained sentence embedding models (MiniLM-L6-v2 and SPECTER2) specifically to check whether any convergence pattern was real or just an artifact of one embedding model’s quirks.\nBecause PCA on embedding centroids gives you axes, not sentences, interpreting what each principal component actually meant took three separate checks: reading the five highest- and lowest-scoring documents on each axis, correlating PC scores against field labels and publication year to confirm the axes tracked genuine disciplinary and temporal structure (not noise), and training a Ridge regression to project each axis back onto the vocabulary that characterises it.\nTeammates led the other two strands: replicating and extending a LASSO-based citation-prediction method (Baba, Baba & Ikeda, 2019) to identify which non-technical words in an abstract still predict citation count, and testing how well citation-prediction features learned only from CS papers transfer to predicting citations in other disciplines."
+  },
+  {
+    "objectID": "projects/citation-prediction-nlp.html#key-findings",
+    "href": "projects/citation-prediction-nlp.html#key-findings",
+    "title": "Predicting Paper Success & Tracing the Spread of Computational Thinking",
+    "section": "Key findings",
+    "text": "Key findings\n\nTwo seemingly contradictory patterns both held, across both embedding models: other fields’ language is converging toward computer science’s (an effect that visibly accelerates after 2010), while scientific fields overall have grown more semantically distinct from each other over the past 60 years. CS isn’t dissolving disciplinary boundaries in general — it’s specifically pulling other fields toward it while they simultaneously drift apart elsewhere.\nThe convergence is stylistic as much as topical. Each field’s core thematic identity stayed stable over time, but academic writing broadly shifted from administrative language toward empirical, quantitative vocabulary — fields are writing more like empirical CS without actually changing what they write about.\n(Team) Technical jargon barely matters for citation prediction. Replacing every technical noun in an abstract with a placeholder token barely changed — and at the strictest citation-percentile thresholds, actually improved — a classifier’s ability to separate high- from low-citation papers.\n(Team) Of 17 LLM-derived abstract features, two carried almost all the signal: a “hype score” and whether the abstract read as a survey. A paper’s own claims about itself — explicit novelty, use of a baseline — were close to irrelevant.\n(Team) CS-trained citation-prediction features transferred above baseline to every tested domain, though the mechanism isn’t yet fully disentangled from simple vocabulary overlap between adjacent fields.\n\n\n\n\nCosine similarity between each field’s embedding centroid and computer science’s, 1980-2020 — convergence is visible from the 1980s but accelerates sharply after 2010, and the pattern holds across Biology, Chemistry, Medicine, and Physics.\n\n\n\n\n\nFields overall have grown more semantically distinct over the same period — shown here under two independently-trained embedding models (MiniLM and SPECTER2), so the divergence isn’t an artifact of one model’s quirks.\n\n\n\n\n\nPCA on science-specific embeddings: each field’s trajectory in PC1/PC2 space, 1960-2024. Computer Science (red) sits apart from the mainstream science cluster and stays comparatively stable, while other fields visibly drift."
+  },
+  {
+    "objectID": "projects/citation-prediction-nlp.html#code",
+    "href": "projects/citation-prediction-nlp.html#code",
+    "title": "Predicting Paper Success & Tracing the Spread of Computational Thinking",
+    "section": "Code",
+    "text": "Code\nThis was a 5-person team project — the linked repository covers all three analysis strands (citation prediction, semantic drift, transfer learning), not just the semantic drift piece described above.\n\nFull repo on GitHub"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "",
+    "section": "",
+    "text": "Code\n\n\n\n\n\nAdam Hrehovcik\n\nData & Business Analytics\n\nI’m an MSc Business Analytics student at Imperial College London, currently joining Revolut as a Graduate Operations Manager. This site collects the analytical projects and reports I’ve built — the full write-ups, the code behind them, and what I actually found.\n\nMachine Learning Projects → Business Analytics Projects → Download CV LinkedIn ↗"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Imperial College London — MSc Business Analytics (Sep 2025 – Aug 2026) Imperial Excellence Scholar\nWarwick Business School — BSc Management with Finance, First-Class Honours Ranked 3rd in graduating cohort\n\n\n\n\nLinkedIn\nGitHub \nCV (PDF)"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "About",
+    "section": "",
+    "text": "Imperial College London — MSc Business Analytics (Sep 2025 – Aug 2026) Imperial Excellence Scholar\nWarwick Business School — BSc Management with Finance, First-Class Honours Ranked 3rd in graduating cohort"
+  },
+  {
+    "objectID": "about.html#elsewhere",
+    "href": "about.html#elsewhere",
+    "title": "About",
+    "section": "",
+    "text": "LinkedIn\nGitHub \nCV (PDF)"
+  },
+  {
+    "objectID": "business-analytics.html",
+    "href": "business-analytics.html",
+    "title": "Data & Business Analytics",
+    "section": "",
+    "text": "Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nRetail AI Intelligence Suite\n\n\n\nDashboard\n\nCode\n\nAcademic\n\nPython\n\nStreamlit\n\nForecasting\n\n\n\nA three-tab Streamlit dashboard unifying demand forecasting, SCAN*PRO promotion-effectiveness, and pricing analysis for a 44-SKU e-commerce catalogue — 16 of 44 SKUs get a…\n\n\n\nMay 1, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nHotel Booking Cancellation & Revenue Analysis\n\n\n\nReport\n\nCode\n\nAcademic\n\nR\n\ntidyverse\n\nData Visualisation\n\n\n\nIdentifying what drives cancellations and how booking behaviour differs by country, to inform hotel marketing strategy.\n\n\n\nFeb 3, 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "machine-learning.html",
+    "href": "machine-learning.html",
+    "title": "Machine Learning & Data Science",
+    "section": "",
+    "text": "Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nProbabilistic Electricity Demand Forecasting\n\n\n\nReport\n\nCode\n\nAcademic\n\nPython\n\nForecasting\n\nRegression\n\nXGBoost\n\nTime Series\n\n\n\nAn OLS + XGBoost + AR forecasting stack for GB electricity demand, validated on an expanding window and scored live across an 8-round forecasting competition.\n\n\n\nMay 1, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nPredicting Paper Success & Tracing the Spread of Computational Thinking\n\n\n\nReport\n\nCode\n\nAcademic\n\nPython\n\nNLP\n\nEmbeddings\n\nPCA\n\n\n\nText analysis of 889K paper abstracts — citation prediction, semantic drift, and transfer learning across scientific disciplines. Team project; write-up scoped to my…\n\n\n\nApr 1, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nSynthetic Movie Review Generator: Trigrams to LSTM to a GAN-style Discriminator\n\n\n\nReport\n\nCode\n\nAcademic\n\nPython\n\nDeep Learning\n\nNLP\n\nLSTM\n\n\n\nA word-level trigram baseline, an LSTM language model, and a discriminator trained to catch what the LSTM still gets wrong — built from scratch on 25K IMDb reviews.\n\n\n\nFeb 20, 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/energy-forecasting.html",
+    "href": "projects/energy-forecasting.html",
+    "title": "Probabilistic Electricity Demand Forecasting",
+    "section": "",
+    "text": "Predict next-day electricity demand for England and Wales — not as a single number, but as a full probability distribution (µ, σ) — across eight live rounds of a forecasting competition. The scoring rule was log-likelihood, so it punished both inaccurate point forecasts and poorly calibrated uncertainty: a confident model that missed was penalised far more harshly than a wider, more honest one."
+  },
+  {
+    "objectID": "projects/energy-forecasting.html#the-problem",
+    "href": "projects/energy-forecasting.html#the-problem",
+    "title": "Probabilistic Electricity Demand Forecasting",
+    "section": "",
+    "text": "Predict next-day electricity demand for England and Wales — not as a single number, but as a full probability distribution (µ, σ) — across eight live rounds of a forecasting competition. The scoring rule was log-likelihood, so it punished both inaccurate point forecasts and poorly calibrated uncertainty: a confident model that missed was penalised far more harshly than a wider, more honest one."
+  },
+  {
+    "objectID": "projects/energy-forecasting.html#approach",
+    "href": "projects/energy-forecasting.html#approach",
+    "title": "Probabilistic Electricity Demand Forecasting",
+    "section": "Approach",
+    "text": "Approach\nThree data sources: daily GB demand (National Grid), 6-hourly historical weather for London/Bristol/Leeds (Meteoblue), and day-ahead weather forecasts covering the same cities — the actual forecast inputs available at prediction time, not observed weather.\nValidation design. The main risk in a forecasting competition is silently leaking future information into a model that looks great in backtests and then underperforms live. Every forecast was generated on an expanding window, refitting from scratch using only data more than two days old (the real information barrier during the competition). Model selection used a separate validation period (Jan–Mar 2025) from the final test period (Jan–May 2026), so tuning decisions couldn’t bias the reported test score.\nFeature engineering (60 features). Demand responds asymmetrically to temperature — heating drives it up sharply below ~15.5°C, cooling drives it up only mildly above ~22°C — so Heating/Cooling Degree Days replaced raw temperature. Day length and sunshine (interacted with a low-heating-demand regime) captured lighting and solar-substitution effects the temperature features missed. Granular holiday dummies (Christmas, New Year, and Easter decomposed into five separate day-types), demand lags at 2/7/364 days chosen to respect both the information barrier and weekly/annual seasonality, and a temperature-anomaly term for “surprise” weather rounded out the set.\nModel stack. OLS on the full feature set as the baseline — it gives an exact closed-form predictive distribution, which a tree model doesn’t. XGBoost was then fit on the OLS residuals (3-year sliding window) to pick up nonlinear interactions OLS can’t represent, and an AR(2,7) model mopped up the remaining short-term serial correlation. All corrections are additive to the mean only, so the OLS-derived predictive variance stays valid.\nSigma calibration. The multiplier on the predictive standard deviation was tuned on the validation set — but optimising the mean log-score picked an aggressive multiplier (0.783) that occasionally produced large negative scores. With only eight competition rounds, that tail risk is not something you can average away, so the multiplier actually used (1.167 for OLS alone, 0.924 for the full stack) instead maximised a risk-adjusted floor: mean minus one standard deviation."
+  },
+  {
+    "objectID": "projects/energy-forecasting.html#key-findings",
+    "href": "projects/energy-forecasting.html#key-findings",
+    "title": "Probabilistic Electricity Demand Forecasting",
+    "section": "Key findings",
+    "text": "Key findings\n\nThe full stack beat the OLS baseline on every metric: out-of-sample mean log score of 1.931 vs. 1.682 for OLS alone (and 0.41 for a no-skill climatological baseline), RMSE of 3.57% vs. 4.47%.\nCalibrating for risk mattered as much as model choice. The mean-optimal sigma multiplier was smaller (more confident) than the one actually used — deliberately trading a little average score for protection against a single catastrophic round, which matters far more over 8 rounds than over a long backtest.\nA real unit-conversion bug cost an entire round. Forecast sunshine arrived in hours; training data was in minutes. The silent 60x mismatch underestimated sunshine and inflated the demand prediction on a particularly sunny day, dropping that round’s score to a capped 0 instead of an estimated ~2.1. It was caught, diagnosed, and fixed before the next round — the kind of live-data bug that a backtest alone won’t surface.\nFinal competition score: 15.179 across the 8 rounds (negative scores capped at 0 by the competition rules).\n\n\n\n\nLog-demand shows a clear seasonal and weekly pattern, plus a gradual structural decline — both directly motivated the feature set above.\n\n\n\n\n\nThe temperature/demand relationship is a kink, not a line — cold snaps drive heating demand sharply, but very warm days only mildly increase cooling demand. This is why Heating/Cooling Degree Days replaced raw temperature.\n\n\n\n\n\nOut-of-sample probabilistic forecast for the 2026 test period: predictive mean, 68%/95% intervals, and actual demand (top), with the day-by-day log score (bottom). The two dips are the sunshine-units bug round and one other high-volatility day."
+  },
+  {
+    "objectID": "projects/energy-forecasting.html#code",
+    "href": "projects/energy-forecasting.html#code",
+    "title": "Probabilistic Electricity Demand Forecasting",
+    "section": "Code",
+    "text": "Code\nAsymmetric temperature response via Heating/Cooling Degree Days, one of the 60 engineered features:\nfor city in [\"london\", \"leeds\", \"bristol\"]:\n    features[f\"HDD_{city}\"]         = np.maximum(0, 15.5 - df[f\"temp_{city}_mean\"])\n    features[f\"CDD_{city}\"]         = np.maximum(0, df[f\"temp_{city}_mean\"] - 22.0)\n    features[f\"temp_{city}_spread\"] = df[f\"temp_{city}_max\"] - df[f\"temp_{city}_min\"]\n\n# Lagged HDD (thermal inertia) and a weekend interaction\nfor city in [\"london\", \"leeds\", \"bristol\"]:\n    features[f\"HDD_{city}_lag1\"] = features[f\"HDD_{city}\"].shift(1)\n\nis_weekend = (df.index.dayofweek &gt;= 5).astype(int)\nfor city in [\"london\", \"leeds\", \"bristol\"]:\n    features[f\"HDD_{city}_x_weekend\"] = features[f\"HDD_{city}\"] * is_weekend\nThe OLS + XGBoost residual + AR(2,7) stack, refit on each forecast date:\n# OLS baseline, fitted on all data up to the information barrier\nXtX_inv = np.linalg.inv(X_all.T @ X_all)\nbeta    = XtX_inv @ (X_all.T @ y_all)\nresid_all = y_all - X_all @ beta\n\n# XGBoost on OLS residuals -- 3-year sliding window, year_trend excluded\n# (tree models can't extrapolate a linear trend past the training range)\nxgb_mask  = all_clean.index &gt;= last_date - pd.Timedelta(days=1095)\nxgb_final = XGBRegressor(n_estimators=200, max_depth=4, learning_rate=0.05,\n                          subsample=0.8, colsample_bytree=0.8, random_state=42)\nxgb_final.fit(all_clean[XGB_FEATURE_COLS].values[xgb_mask], resid_all[xgb_mask])\n\n# AR(2,7) mops up the remaining short-term serial correlation -- last 90 days only\nar_mask  = all_clean.index &gt;= last_date - pd.Timedelta(days=90)\nar_vals  = resid_all[ar_mask] - xgb_final.predict(all_clean[XGB_FEATURE_COLS].values[ar_mask])\nar_model = AutoReg(ar_vals, lags=[2, 7], old_names=False).fit()\n\nmu    = mu_ols + xgb_final.predict(x_xgb)[0] + ar_model.forecast(h)[-1]\nsigma = np.sqrt(mse * (1.0 + x @ XtX_inv @ x)) * m_calibrated\n\nFull notebook (.ipynb)"
+  },
+  {
+    "objectID": "projects/movie-review-generator.html",
+    "href": "projects/movie-review-generator.html",
+    "title": "Synthetic Movie Review Generator: Trigrams to LSTM to a GAN-style Discriminator",
+    "section": "",
+    "text": "Can a language model trained from scratch (no pretrained embeddings, no prebuilt tokenizer) generate movie reviews that pass as human-written — and how do you actually measure “passes as human,” beyond just eyeballing the output? The assignment required building a statistical baseline, a neural language model, and a discriminative classifier to test the neural model’s output against real reviews, then reflecting honestly on what each stage could and couldn’t do."
+  },
+  {
+    "objectID": "projects/movie-review-generator.html#the-problem",
+    "href": "projects/movie-review-generator.html#the-problem",
+    "title": "Synthetic Movie Review Generator: Trigrams to LSTM to a GAN-style Discriminator",
+    "section": "",
+    "text": "Can a language model trained from scratch (no pretrained embeddings, no prebuilt tokenizer) generate movie reviews that pass as human-written — and how do you actually measure “passes as human,” beyond just eyeballing the output? The assignment required building a statistical baseline, a neural language model, and a discriminative classifier to test the neural model’s output against real reviews, then reflecting honestly on what each stage could and couldn’t do."
+  },
+  {
+    "objectID": "projects/movie-review-generator.html#approach",
+    "href": "projects/movie-review-generator.html#approach",
+    "title": "Synthetic Movie Review Generator: Trigrams to LSTM to a GAN-style Discriminator",
+    "section": "Approach",
+    "text": "Approach\nTokenization. Word-level tokenization over subword methods (like BPE) — less compact, but every token is human-readable, which made it far easier to debug the pipeline and inspect vocabulary decisions at every stage. &lt;START&gt;/&lt;END&gt; mark sentence boundaries, &lt;PAD&gt; supports fixed-length batching, &lt;UNK&gt; absorbs rare words after vocabulary reduction.\nTrigram baseline (N=3). A bigram conditions on too little context to capture phrase structure; a four-gram, given the corpus size, would mostly fall back on smoothing rather than observed counts. Trigram was the pragmatic middle ground, with Laplace (k=1) smoothing so perplexity stays finite even over unseen contexts.\nVocabulary reduction for the LSTM. Softmax cost scales with vocabulary size, so training on the full ~104K-word vocabulary wasn’t feasible in the time available. Keeping only the top 20% most frequent tokens (20,823 words) cut the softmax output layer drastically while still covering 97.3% of token occurrences — the &lt;UNK&gt; rate in training data came out to just 2.7%.\nArchitecture. Embedding(128) → LSTM(128) → Dense(softmax), trained on a fixed 20-token context window (chosen against the corpus’s median sentence length of 17). Alternatives tried and rejected: a smaller 72-unit LSTM (meaningfully hurt validation accuracy — hidden size is the real bottleneck on context capacity), an extra dense layer before the softmax (disproportionate cost, since it sits right before the vocabulary-sized layer), and larger embeddings (diminishing returns against the ~1hr training budget).\nA real bug worth including. A stride-based downsampling rule kept only every k-th training position — except a “keep_end” special case that always retained &lt;END&gt; targets regardless of stride, meant to stop short sentences being underrepresented. That asymmetry silently inflated &lt;END&gt;’s frequency in the training targets relative to every other token. The trained model learned this distortion perfectly: it assigned &lt;END&gt; ~90% probability at the very first decoding step, collapsing generation immediately. Diagnosed by checking the empirical &lt;END&gt; frequency in training targets against the true corpus distribution — a data construction bug, not a modelling one. Fixed by applying stride uniformly and instead explicitly keeping each sentence’s first two positions (protecting short-sentence coverage without biasing the target distribution).\nDiscriminator. A second, deliberately shallow model — Embedding → Gaussian noise → global average pooling → Dense(ReLU) → sigmoid — trained to distinguish real reviews from the LSTM’s own generations, both represented in the same reduced vocabulary (otherwise the discriminator could cheat by keying off &lt;UNK&gt; density instead of learning real structural differences)."
+  },
+  {
+    "objectID": "projects/movie-review-generator.html#key-findings",
+    "href": "projects/movie-review-generator.html#key-findings",
+    "title": "Synthetic Movie Review Generator: Trigrams to LSTM to a GAN-style Discriminator",
+    "section": "Key findings",
+    "text": "Key findings\n\nThe LSTM cut perplexity by &gt;20x over the reduced-vocabulary trigram (184.2 vs. 4,119.7) and by &gt;100x over the full-vocabulary trigram (21,901.9) — a large, unambiguous jump in raw predictive performance.\nBut a simple, shallow discriminator still separated real from generated text almost perfectly — ROC AUC 0.975, accuracy 92%. That gap is the actual headline finding: perplexity says the LSTM models local structure far better than a trigram, while the discriminator shows it still hasn’t matched the true distribution of real reviews. Both can be true — better next-token prediction doesn’t automatically mean indistinguishable text.\nGenerated text is fluent but generic. The LSTM leans hard on high-frequency phrases (“very good”, “a little too long”) and coherence degrades over longer sequences — consistent with the discriminator’s recall gap (53 real reviews misclassified as fake) showing partial, not full, distributional overlap.\nThe stride/&lt;END&gt; bug is the more useful lesson than any hyperparameter choice — the collapse looked like a modelling failure but was entirely a data construction artifact, caught by checking target-token frequencies against the corpus rather than by tuning the network.\n\n\n\n\nPerplexity on a log scale — the LSTM’s jump over both trigram baselines is large, but perplexity alone doesn’t tell you the generated text is indistinguishable from real reviews (see the discriminator result above).\n\n\nSample generations, trigram vs. LSTM:\n\n\n\n\n\n\n\nMethod\nGenerated text\n\n\n\n\nTrigram (greedy)\nthe film is a very good\n\n\nTrigram (top-10)\nand i was watching a very bad acting and a half of the film is that it was very good\n\n\nLSTM (greedy)\nthe film is a very good film\n\n\nLSTM (top-10)\nits a great movie but its not a great movie for the time of this film\n\n\nLSTM (top-10)\nthe film was a little too long"
+  },
+  {
+    "objectID": "projects/movie-review-generator.html#code",
+    "href": "projects/movie-review-generator.html#code",
+    "title": "Synthetic Movie Review Generator: Trigrams to LSTM to a GAN-style Discriminator",
+    "section": "Code",
+    "text": "Code\nTrigram counting and generation — the statistical baseline:\ndef build_trigram_counts(dataset):\n    all_sentences = []\n    for text, y in dataset:\n        for sentence in tokenize_text(text):\n            all_sentences.append([\"&lt;START&gt;\"] + sentence)\n\n    trigram_counts = {}\n    for sentence in all_sentences:\n        for i in range(2, len(sentence)):\n            w1, w2, w3 = sentence[i-2], sentence[i-1], sentence[i]\n            context = (w1, w2)\n            trigram_counts.setdefault(context, {})\n            trigram_counts[context][w3] = trigram_counts[context].get(w3, 0) + 1\n    return trigram_counts\nThe LSTM language model — embedding, single recurrent layer, softmax over the reduced vocabulary:\nmodel = keras.Sequential([\n    layers.Input(shape=(max_len,)),\n    layers.Embedding(input_dim=reduced_vocab_size, output_dim=128, mask_zero=True),\n    layers.LSTM(128),\n    layers.Dense(reduced_vocab_size, activation=\"softmax\"),\n])\nmodel.compile(optimizer=\"adam\", loss=\"sparse_categorical_crossentropy\",\n              metrics=[\"sparse_categorical_accuracy\"])\nThe discriminator — intentionally shallow, so a strong result says something about the generator’s remaining gap, not the classifier’s sophistication:\ndisc = keras.Sequential([\n    layers.Input(shape=(max_len_disc,)),\n    layers.Embedding(input_dim=reduced_vocab_size, output_dim=64, mask_zero=True),\n    layers.GaussianNoise(0.05),\n    layers.GlobalAveragePooling1D(),\n    layers.Dense(256, activation=\"relu\"),\n    layers.Dropout(0.3),\n    layers.Dense(1, activation=\"sigmoid\"),\n])\ndisc.compile(optimizer=keras.optimizers.Adam(1e-3),\n             loss=\"binary_crossentropy\",\n             metrics=[\"accuracy\", keras.metrics.AUC(name=\"AUC\")])\n\nFull notebook (.ipynb)"
+  }
+]

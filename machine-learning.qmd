@@ -1,0 +1,29 @@
+---
+title: "Machine Learning & Data Science"
+page-layout: full
+title-block-banner: false
+listing:
+  contents:
+    - projects/energy-forecasting.qmd
+    - projects/movie-review-generator.qmd
+    - projects/citation-prediction-nlp.qmd
+  type: grid
+  grid-columns: 3
+  image-height: 180px
+  fields: [image, title, description, categories, date]
+  sort: "date desc"
+  categories: true
+  sort-ui: true
+  filter-ui: true
+---
+
+<!--
+Unlike projects.qmd (now removed), this page's `contents:` list is explicit
+rather than "everything in /projects" — that's what lets this page and
+business-analytics.qmd split the same /projects folder into two tracks
+without moving any files around (which would've broken every relative
+image/file path in the existing pages).
+
+Add a new ML/DS project = drop the .qmd into /projects as usual, then add
+its path to the `contents:` list above.
+-->

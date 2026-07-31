@@ -4,3 +4,16 @@
 
 # NOTE: /docs/ is intentionally NOT ignored — it's the rendered output
 # GitHub Pages serves from (see README for the "Publishing" section).
+
+**/*.quarto_ipynb
+
+# Raw course/competition datasets — not ours to redistribute publicly
+/Forecasting Competition - Data - 2026_20.xlsx
+
+# Trained model weights — too large for a public GitHub Pages repo (65MB);
+# the notebook + code snippets on the project page are the shareable artifact
+/my_final_model.keras
+
+# Original team slide deck — content is already on the NLP project page,
+# no need to republish the raw file (and it's a team deliverable, not solely mine)
+/Text Analysis for Business - Group L.pptx

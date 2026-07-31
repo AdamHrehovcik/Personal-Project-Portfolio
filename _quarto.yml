@@ -1,6 +1,12 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - "*.qmd"
+    - "**/*.qmd"
+    - "!files/"   # /files holds static downloads (PDFs, notebooks) — never render these as pages
+  resources:
+    - "files/**"
 
 website:
   title: "Adam Hrehovcik"
@@ -11,8 +17,12 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: projects.qmd
-        text: Projects
+      - text: Projects
+        menu:
+          - href: machine-learning.qmd
+            text: Machine Learning & Data Science
+          - href: business-analytics.qmd
+            text: Data & Business Analytics
       - href: about.qmd
         text: About
     right:

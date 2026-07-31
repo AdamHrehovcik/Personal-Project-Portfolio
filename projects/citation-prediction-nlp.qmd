@@ -1,43 +1,95 @@
 ---
 title: "Predicting Paper Success & Tracing the Spread of Computational Thinking"
-description: "Text analysis of 889K paper abstracts — citation prediction, semantic drift, and transfer learning across scientific disciplines."
+description: "Text analysis of 889K paper abstracts — citation prediction, semantic drift, and transfer learning across scientific disciplines. Team project; write-up scoped to my contribution."
 date: 2026-04-01   # TODO: confirm actual date
 categories: [Report, Code, Academic, Python, NLP, Embeddings, PCA]
-image: images/nlp-thumb.png   # TODO
-draft: true   # remove this line once the page is actually filled in
+image: images/nlp-thumb.png
 ---
 
-<!--
-NOTE: unlike the other three, you only have slides for this one — no
-notebook. Before this page is worth publishing, either:
-  (a) get the notebook from Ruben/Kacper/Tim/Vova (5-person team project),
-      since your specific contribution was the PCA & embeddings work, or
-  (b) skip this one for the portfolio — it's the most purely academic of
-      your projects (no business decision at the end), so it's optional
-      rather than essential, unlike the other three.
-`draft: true` above keeps this page out of the published site listing until
-you're ready — Quarto won't render/link it while draft is set.
--->
+*Team project — Ruben Jacquemyn, Kacper Ruszkiewicz, Tim Bakkenes, Vladimir
+(Vova) Drozdov, and myself. This write-up covers the full team's findings for
+context but is scoped to my own contribution (semantic drift analysis) —
+see "What I worked on" below.*
 
 ## The problem
 
-<!-- TODO -->
+Computer science's terminology and methods appear to be showing up more and
+more in other scientific fields — but is that actually true, and if so, does
+it help explain why some papers get cited far more than others? We analysed
+889K paper abstracts (Semantic Scholar Open Research Corpus) across three
+angles: what textual features predict citation counts, how far other
+disciplines' language has actually drifted toward CS's over time, and
+whether citation-prediction features learned purely from CS papers transfer
+to other fields.
 
 ## What I worked on
 
-<!--
-Your role was PCA on science-specific document embeddings (MiniLM,
-SPECTER2) to trace how scientific disciplines have semantically drifted
-toward computer science over six decades — interpreted via Ridge regression
-vocabulary projection, metadata correlation, and extreme document
-inspection. Be specific that this was your slice of a 5-person team project,
-same honesty standard as everywhere else.
--->
+My slice of the project was the **semantic drift analysis**: tracing how
+strongly each field's language has moved toward computer science's over six
+decades. I ran this on two independently-trained sentence embedding models
+(MiniLM-L6-v2 and SPECTER2) specifically to check whether any convergence
+pattern was real or just an artifact of one embedding model's quirks.
+
+Because PCA on embedding centroids gives you axes, not sentences, interpreting
+what each principal component actually *meant* took three separate checks:
+reading the five highest- and lowest-scoring documents on each axis,
+correlating PC scores against field labels and publication year to confirm
+the axes tracked genuine disciplinary and temporal structure (not noise), and
+training a Ridge regression to project each axis back onto the vocabulary
+that characterises it.
+
+Teammates led the other two strands: replicating and extending a LASSO-based
+citation-prediction method (Baba, Baba & Ikeda, 2019) to identify which
+*non-technical* words in an abstract still predict citation count, and
+testing how well citation-prediction features learned only from CS papers
+transfer to predicting citations in other disciplines.
 
 ## Key findings
 
-<!-- TODO -->
+- **Two seemingly contradictory patterns both held, across both embedding
+  models**: other fields' language is converging toward computer science's
+  (an effect that visibly accelerates after 2010), while scientific fields
+  overall have grown *more* semantically distinct from each other over the
+  past 60 years. CS isn't dissolving disciplinary boundaries in general — it's
+  specifically pulling other fields toward it while they simultaneously drift
+  apart elsewhere.
+- **The convergence is stylistic as much as topical.** Each field's core
+  thematic identity stayed stable over time, but academic writing broadly
+  shifted from administrative language toward empirical, quantitative
+  vocabulary — fields are writing more like empirical CS without actually
+  changing what they write about.
+- **(Team) Technical jargon barely matters for citation prediction.**
+  Replacing every technical noun in an abstract with a placeholder token
+  barely changed — and at the strictest citation-percentile thresholds,
+  actually *improved* — a classifier's ability to separate high- from
+  low-citation papers.
+- **(Team) Of 17 LLM-derived abstract features, two carried almost all the
+  signal**: a "hype score" and whether the abstract read as a survey. A
+  paper's own claims about itself — explicit novelty, use of a baseline —
+  were close to irrelevant.
+- **(Team) CS-trained citation-prediction features transferred above
+  baseline to every tested domain**, though the mechanism isn't yet fully
+  disentangled from simple vocabulary overlap between adjacent fields.
+
+![Cosine similarity between each field's embedding centroid and computer
+science's, 1980-2020 — convergence is visible from the 1980s but accelerates
+sharply after 2010, and the pattern holds across Biology, Chemistry,
+Medicine, and Physics.](images/nlp-cs-convergence.png)
+
+![Fields overall have grown more semantically distinct over the same period
+— shown here under two independently-trained embedding models (MiniLM and
+SPECTER2), so the divergence isn't an artifact of one model's
+quirks.](images/nlp-field-divergence.png)
+
+![PCA on science-specific embeddings: each field's trajectory in PC1/PC2
+space, 1960-2024. Computer Science (red) sits apart from the mainstream
+science cluster and stays comparatively stable, while other fields visibly
+drift.](images/nlp-pca-trajectories.png)
 
 ## Code
 
-- [Notebook on GitHub](https://github.com/YOUR-GITHUB-USERNAME/citation-prediction-nlp) <!-- TODO -->
+This was a 5-person team project — the linked repository covers all three
+analysis strands (citation prediction, semantic drift, transfer learning),
+not just the semantic drift piece described above.
+
+- [Full repo on GitHub](https://github.com/AdamHrehovcik/Text-Analysis-Project)
