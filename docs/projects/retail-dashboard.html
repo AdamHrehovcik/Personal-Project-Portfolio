@@ -271,16 +271,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="live-dashboard" class="level2">
 <h2 class="anchored" data-anchor-id="live-dashboard">Live dashboard</h2>
-<!-- TODO: once deployed to Streamlit Community Cloud, replace this comment with:
-
-<iframe src="STREAMLIT_APP_URL" width="100%" height="800px" style="border:1px solid #ddd;"></iframe>
-
-[Open dashboard in a new tab ↗](STREAMLIT_APP_URL){target="_blank"}
-
-Deploy without setting the GROQ_API_KEY secret so the dashboard is safe to
-embed publicly — every chart, forecast, and recommendation works fully
-without it; only the AI Q&A panels show a graceful "add your own key"
-message instead of calling out to Groq on a random visitor's behalf. -->
+<p>The dashboard runs fully without an API key — every chart, forecast, and recommendation below works out of the box. AI Q&amp;A panels are off by default; paste your own free <a href="https://console.groq.com/keys">Groq key</a> into the “🔑 AI features” panel in the sidebar to turn them on for your session only.</p>
+<iframe src="https://marketing-retail-ai-dashboard.streamlit.app/?embed=true" width="100%" height="800px" style="border:1px solid #ddd;">
+</iframe>
+<p><a href="https://marketing-retail-ai-dashboard.streamlit.app/" target="_blank">Open dashboard in a new tab ↗</a></p>
 </section>
 <section id="code" class="level2">
 <h2 class="anchored" data-anchor-id="code">Code</h2>
@@ -860,55 +854,53 @@ message instead of calling out to Groq on a random visitor's behalf. -->
 <span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## Live dashboard</span></span>
 <span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- </span><span class="al">TODO</span><span class="co">: once deployed to Streamlit Community Cloud, replace this comment with:</span></span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;iframe src="STREAMLIT_APP_URL" width="100%" height="800px" style="border:1px solid #ddd;"&gt;&lt;/iframe&gt;</span></span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a><span class="co">[Open dashboard in a new tab ↗](STREAMLIT_APP_URL){target="_blank"}</span></span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="co">Deploy without setting the GROQ_API_KEY secret so the dashboard is safe to</span></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="co">embed publicly — every chart, forecast, and recommendation works fully</span></span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="co">without it; only the AI Q&amp;A panels show a graceful "add your own key"</span></span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a><span class="co">message instead of calling out to Groq on a random visitor's behalf. --&gt;</span></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>The dashboard runs fully without an API key — every chart, forecast, and</span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>recommendation below works out of the box. AI Q&amp;A panels are off by default;</span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>paste your own free <span class="co">[</span><span class="ot">Groq key</span><span class="co">](https://console.groq.com/keys)</span> into the "🔑 AI</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>features" panel in the sidebar to turn them on for your session only.</span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">iframe</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://marketing-retail-ai-dashboard.streamlit.app/?embed=true"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"100%"</span><span class="ot"> height</span><span class="op">=</span><span class="st">"800px"</span><span class="ot"> style</span><span class="op">=</span><span class="st">"border:1px solid #ddd;"</span><span class="dt">&gt;&lt;/</span><span class="kw">iframe</span><span class="dt">&gt;</span></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Open dashboard in a new tab ↗</span><span class="co">](https://marketing-retail-ai-dashboard.streamlit.app/)</span>{target="_blank"}</span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code</span></span>
 <span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code</span></span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>The SCAN*PRO per-SKU regression — one OLS model per SKU, isolating the</span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>promotion effect from price and trend:</span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sku_id <span class="kw">in</span> <span class="bu">sorted</span>(df[<span class="st">"sku"</span>].unique()):</span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>    sku_df <span class="op">=</span> df[df[<span class="st">"sku"</span>] <span class="op">==</span> sku_id].copy().dropna(subset<span class="op">=</span>[<span class="st">"log_sales"</span>])</span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>    sku_df <span class="op">=</span> sku_df.sort_values(<span class="st">"week"</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    sku_df[<span class="st">"trend"</span>] <span class="op">=</span> np.arange(<span class="bu">len</span>(sku_df))</span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> sm.add_constant(sku_df[[<span class="st">"feat_int"</span>, <span class="st">"log_price"</span>, <span class="st">"trend"</span>]])</span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> sku_df[<span class="st">"log_sales"</span>]</span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> sm.OLS(y, X).fit()</span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>    coef, pval <span class="op">=</span> model.params[<span class="st">"feat_int"</span>], model.pvalues[<span class="st">"feat_int"</span>]</span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>    pct_lift   <span class="op">=</span> (np.exp(coef) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span></span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>    baseline   <span class="op">=</span> sku_df[sku_df[<span class="st">"feat_int"</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">"weekly_sales"</span>].mean()</span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>    incremental <span class="op">=</span> baseline <span class="op">*</span> (np.exp(coef) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> sku_df[<span class="st">"feat_int"</span>].<span class="bu">sum</span>()</span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>LightGBM quantile regression for the 13-week forward forecast — three</span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>models (P10/P50/P90) trained per run, refit on all available data:</span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> q, label <span class="kw">in</span> [(<span class="fl">0.10</span>, <span class="st">'lower'</span>), (<span class="fl">0.50</span>, <span class="st">'median'</span>), (<span class="fl">0.90</span>, <span class="st">'upper'</span>)]:</span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> lgb.LGBMRegressor(</span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>        objective<span class="op">=</span><span class="st">'quantile'</span>, alpha<span class="op">=</span>q,</span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>        n_estimators<span class="op">=</span>n_trees, learning_rate<span class="op">=</span><span class="fl">0.03</span>, max_depth<span class="op">=</span><span class="dv">6</span>,</span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>        num_leaves<span class="op">=</span><span class="dv">40</span>, min_child_samples<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>        subsample<span class="op">=</span><span class="fl">0.8</span>, colsample_bytree<span class="op">=</span><span class="fl">0.8</span>,</span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>        reg_alpha<span class="op">=</span><span class="fl">0.1</span>, reg_lambda<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">42</span>,</span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>    m.fit(X_all, y_all)</span>
-<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>    full_models[label] <span class="op">=</span> m</span>
-<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Full repo on GitHub</span><span class="co">](https://github.com/AdamHrehovcik/RMA_Project)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>The SCAN*PRO per-SKU regression — one OLS model per SKU, isolating the</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>promotion effect from price and trend:</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sku_id <span class="kw">in</span> <span class="bu">sorted</span>(df[<span class="st">"sku"</span>].unique()):</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>    sku_df <span class="op">=</span> df[df[<span class="st">"sku"</span>] <span class="op">==</span> sku_id].copy().dropna(subset<span class="op">=</span>[<span class="st">"log_sales"</span>])</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>    sku_df <span class="op">=</span> sku_df.sort_values(<span class="st">"week"</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>    sku_df[<span class="st">"trend"</span>] <span class="op">=</span> np.arange(<span class="bu">len</span>(sku_df))</span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> sm.add_constant(sku_df[[<span class="st">"feat_int"</span>, <span class="st">"log_price"</span>, <span class="st">"trend"</span>]])</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> sku_df[<span class="st">"log_sales"</span>]</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> sm.OLS(y, X).fit()</span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>    coef, pval <span class="op">=</span> model.params[<span class="st">"feat_int"</span>], model.pvalues[<span class="st">"feat_int"</span>]</span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>    pct_lift   <span class="op">=</span> (np.exp(coef) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>    baseline   <span class="op">=</span> sku_df[sku_df[<span class="st">"feat_int"</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">"weekly_sales"</span>].mean()</span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>    incremental <span class="op">=</span> baseline <span class="op">*</span> (np.exp(coef) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> sku_df[<span class="st">"feat_int"</span>].<span class="bu">sum</span>()</span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>LightGBM quantile regression for the 13-week forward forecast — three</span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>models (P10/P50/P90) trained per run, refit on all available data:</span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> q, label <span class="kw">in</span> [(<span class="fl">0.10</span>, <span class="st">'lower'</span>), (<span class="fl">0.50</span>, <span class="st">'median'</span>), (<span class="fl">0.90</span>, <span class="st">'upper'</span>)]:</span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> lgb.LGBMRegressor(</span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>        objective<span class="op">=</span><span class="st">'quantile'</span>, alpha<span class="op">=</span>q,</span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a>        n_estimators<span class="op">=</span>n_trees, learning_rate<span class="op">=</span><span class="fl">0.03</span>, max_depth<span class="op">=</span><span class="dv">6</span>,</span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>        num_leaves<span class="op">=</span><span class="dv">40</span>, min_child_samples<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>        subsample<span class="op">=</span><span class="fl">0.8</span>, colsample_bytree<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>        reg_alpha<span class="op">=</span><span class="fl">0.1</span>, reg_lambda<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>    m.fit(X_all, y_all)</span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>    full_models[label] <span class="op">=</span> m</span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Full repo on GitHub</span><span class="co">](https://github.com/AdamHrehovcik/RMA_Project)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

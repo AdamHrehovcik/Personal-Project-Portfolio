@@ -80,6 +80,17 @@ one standard deviation.
 
 ![Out-of-sample probabilistic forecast for the 2026 test period: predictive mean, 68%/95% intervals, and actual demand (top), with the day-by-day log score (bottom). The two dips are the sunshine-units bug round and one other high-volatility day.](images/energy-forecasting-fanchart-2026.png)
 
+## Full report
+
+The write-up above covers the headline results — the full report walks
+through the complete methodology in detail: the validation design, all 60
+engineered features, the OLS/XGBoost/AR stacking rationale, and the
+round-by-round competition log.
+
+<iframe src="../files/energy-forecasting/energy-forecasting-report.pdf" width="100%" height="800px" style="border:1px solid #ddd;"></iframe>
+
+[Open report in a new tab ↗](../files/energy-forecasting/energy-forecasting-report.pdf){target="_blank"}
+
 ## Code
 
 Asymmetric temperature response via Heating/Cooling Degree Days, one of the

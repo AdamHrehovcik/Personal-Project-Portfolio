@@ -97,6 +97,17 @@ differences).
 | LSTM (top-10) | *its a great movie but its not a great movie for the time of this film* |
 | LSTM (top-10) | *the film was a little too long* |
 
+## Full report
+
+The write-up above covers the headline results — the full report includes
+the complete tokenisation rationale, the trigram smoothing derivation, the
+architecture search (what was tried and rejected for the LSTM), and a
+reflection on using LLMs as a study/work tool (Part 5 of the assignment).
+
+<iframe src="../files/movie-review-generator/movie-review-generator-report.pdf" width="100%" height="800px" style="border:1px solid #ddd;"></iframe>
+
+[Open report in a new tab ↗](../files/movie-review-generator/movie-review-generator-report.pdf){target="_blank"}
+
 ## Code
 
 Trigram counting and generation — the statistical baseline:

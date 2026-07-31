@@ -289,6 +289,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
+<section id="full-report" class="level2">
+<h2 class="anchored" data-anchor-id="full-report">Full report</h2>
+<p>The write-up above covers the headline results — the full report includes the complete tokenisation rationale, the trigram smoothing derivation, the architecture search (what was tried and rejected for the LSTM), and a reflection on using LLMs as a study/work tool (Part 5 of the assignment).</p>
+<iframe src="../files/movie-review-generator/movie-review-generator-report.pdf" width="100%" height="800px" style="border:1px solid #ddd;">
+</iframe>
+<p><a href="../files/movie-review-generator/movie-review-generator-report.pdf" target="_blank">Open report in a new tab ↗</a></p>
+</section>
 <section id="code" class="level2">
 <h2 class="anchored" data-anchor-id="code">Code</h2>
 <p>Trigram counting and generation — the statistical baseline:</p>
@@ -891,64 +898,75 @@ the notebook re-trains the same architecture from scratch. -->
 <span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> LSTM (top-10) <span class="pp">|</span> *its a great movie but its not a great movie for the time of this film* <span class="pp">|</span></span>
 <span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> LSTM (top-10) <span class="pp">|</span> *the film was a little too long* <span class="pp">|</span></span>
 <span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code</span></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a><span class="fu">## Full report</span></span>
 <span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>Trigram counting and generation — the statistical baseline:</span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_trigram_counts(dataset):</span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>    all_sentences <span class="op">=</span> []</span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> text, y <span class="kw">in</span> dataset:</span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> sentence <span class="kw">in</span> tokenize_text(text):</span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>            all_sentences.append([<span class="st">"&lt;START&gt;"</span>] <span class="op">+</span> sentence)</span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>The write-up above covers the headline results — the full report includes</span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>the complete tokenisation rationale, the trigram smoothing derivation, the</span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>architecture search (what was tried and rejected for the LSTM), and a</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>reflection on using LLMs as a study/work tool (Part 5 of the assignment).</span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">iframe</span><span class="ot"> src</span><span class="op">=</span><span class="st">"../files/movie-review-generator/movie-review-generator-report.pdf"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"100%"</span><span class="ot"> height</span><span class="op">=</span><span class="st">"800px"</span><span class="ot"> style</span><span class="op">=</span><span class="st">"border:1px solid #ddd;"</span><span class="dt">&gt;&lt;/</span><span class="kw">iframe</span><span class="dt">&gt;</span></span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Open report in a new tab ↗</span><span class="co">](../files/movie-review-generator/movie-review-generator-report.pdf)</span>{target="_blank"}</span>
 <span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>    trigram_counts <span class="op">=</span> {}</span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> sentence <span class="kw">in</span> all_sentences:</span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="bu">len</span>(sentence)):</span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>            w1, w2, w3 <span class="op">=</span> sentence[i<span class="op">-</span><span class="dv">2</span>], sentence[i<span class="op">-</span><span class="dv">1</span>], sentence[i]</span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>            context <span class="op">=</span> (w1, w2)</span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>            trigram_counts.setdefault(context, {})</span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>            trigram_counts[context][w3] <span class="op">=</span> trigram_counts[context].get(w3, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> trigram_counts</span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>The LSTM language model — embedding, single recurrent layer, softmax over the</span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>reduced vocabulary:</span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> keras.Sequential([</span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>    layers.Input(shape<span class="op">=</span>(max_len,)),</span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>    layers.Embedding(input_dim<span class="op">=</span>reduced_vocab_size, output_dim<span class="op">=</span><span class="dv">128</span>, mask_zero<span class="op">=</span><span class="va">True</span>),</span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>    layers.LSTM(<span class="dv">128</span>),</span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>    layers.Dense(reduced_vocab_size, activation<span class="op">=</span><span class="st">"softmax"</span>),</span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">"adam"</span>, loss<span class="op">=</span><span class="st">"sparse_categorical_crossentropy"</span>,</span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>              metrics<span class="op">=</span>[<span class="st">"sparse_categorical_accuracy"</span>])</span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code</span></span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>Trigram counting and generation — the statistical baseline:</span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_trigram_counts(dataset):</span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>    all_sentences <span class="op">=</span> []</span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> text, y <span class="kw">in</span> dataset:</span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> sentence <span class="kw">in</span> tokenize_text(text):</span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>            all_sentences.append([<span class="st">"&lt;START&gt;"</span>] <span class="op">+</span> sentence)</span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>    trigram_counts <span class="op">=</span> {}</span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> sentence <span class="kw">in</span> all_sentences:</span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="bu">len</span>(sentence)):</span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>            w1, w2, w3 <span class="op">=</span> sentence[i<span class="op">-</span><span class="dv">2</span>], sentence[i<span class="op">-</span><span class="dv">1</span>], sentence[i]</span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>            context <span class="op">=</span> (w1, w2)</span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>            trigram_counts.setdefault(context, {})</span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>            trigram_counts[context][w3] <span class="op">=</span> trigram_counts[context].get(w3, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> trigram_counts</span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>The LSTM language model — embedding, single recurrent layer, softmax over the</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>reduced vocabulary:</span>
 <span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>The discriminator — intentionally shallow, so a strong result says something</span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>about the generator's remaining gap, not the classifier's sophistication:</span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>disc <span class="op">=</span> keras.Sequential([</span>
-<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a>    layers.Input(shape<span class="op">=</span>(max_len_disc,)),</span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>    layers.Embedding(input_dim<span class="op">=</span>reduced_vocab_size, output_dim<span class="op">=</span><span class="dv">64</span>, mask_zero<span class="op">=</span><span class="va">True</span>),</span>
-<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>    layers.GaussianNoise(<span class="fl">0.05</span>),</span>
-<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>    layers.GlobalAveragePooling1D(),</span>
-<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a>    layers.Dense(<span class="dv">256</span>, activation<span class="op">=</span><span class="st">"relu"</span>),</span>
-<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>    layers.Dropout(<span class="fl">0.3</span>),</span>
-<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a>    layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">"sigmoid"</span>),</span>
-<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a>disc.<span class="bu">compile</span>(optimizer<span class="op">=</span>keras.optimizers.Adam(<span class="fl">1e-3</span>),</span>
-<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a>             loss<span class="op">=</span><span class="st">"binary_crossentropy"</span>,</span>
-<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a>             metrics<span class="op">=</span>[<span class="st">"accuracy"</span>, keras.metrics.AUC(name<span class="op">=</span><span class="st">"AUC"</span>)])</span>
-<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Full notebook (.ipynb)</span><span class="co">](../files/movie-review-generator/movie-review-generator-notebook.ipynb)</span></span>
-<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Trained model weights (.keras, ~65MB) intentionally not published here —</span></span>
-<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a><span class="co">too large for a public GitHub Pages repo, and not needed to show the work:</span></span>
-<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a><span class="co">the notebook re-trains the same architecture from scratch. --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> keras.Sequential([</span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>    layers.Input(shape<span class="op">=</span>(max_len,)),</span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a>    layers.Embedding(input_dim<span class="op">=</span>reduced_vocab_size, output_dim<span class="op">=</span><span class="dv">128</span>, mask_zero<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>    layers.LSTM(<span class="dv">128</span>),</span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a>    layers.Dense(reduced_vocab_size, activation<span class="op">=</span><span class="st">"softmax"</span>),</span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">"adam"</span>, loss<span class="op">=</span><span class="st">"sparse_categorical_crossentropy"</span>,</span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>              metrics<span class="op">=</span>[<span class="st">"sparse_categorical_accuracy"</span>])</span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a>The discriminator — intentionally shallow, so a strong result says something</span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a>about the generator's remaining gap, not the classifier's sophistication:</span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a>disc <span class="op">=</span> keras.Sequential([</span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a>    layers.Input(shape<span class="op">=</span>(max_len_disc,)),</span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>    layers.Embedding(input_dim<span class="op">=</span>reduced_vocab_size, output_dim<span class="op">=</span><span class="dv">64</span>, mask_zero<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>    layers.GaussianNoise(<span class="fl">0.05</span>),</span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a>    layers.GlobalAveragePooling1D(),</span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a>    layers.Dense(<span class="dv">256</span>, activation<span class="op">=</span><span class="st">"relu"</span>),</span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>    layers.Dropout(<span class="fl">0.3</span>),</span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>    layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">"sigmoid"</span>),</span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>disc.<span class="bu">compile</span>(optimizer<span class="op">=</span>keras.optimizers.Adam(<span class="fl">1e-3</span>),</span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>             loss<span class="op">=</span><span class="st">"binary_crossentropy"</span>,</span>
+<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>             metrics<span class="op">=</span>[<span class="st">"accuracy"</span>, keras.metrics.AUC(name<span class="op">=</span><span class="st">"AUC"</span>)])</span>
+<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="co">[</span><span class="ot">Full notebook (.ipynb)</span><span class="co">](../files/movie-review-generator/movie-review-generator-notebook.ipynb)</span></span>
+<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- Trained model weights (.keras, ~65MB) intentionally not published here —</span></span>
+<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a><span class="co">too large for a public GitHub Pages repo, and not needed to show the work:</span></span>
+<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a><span class="co">the notebook re-trains the same architecture from scratch. --&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

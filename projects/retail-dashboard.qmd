@@ -88,16 +88,14 @@ segmentation, and the final 13-week forward forecast.
 
 ## Live dashboard
 
-<!-- TODO: once deployed to Streamlit Community Cloud, replace this comment with:
+The dashboard runs fully without an API key — every chart, forecast, and
+recommendation below works out of the box. AI Q&A panels are off by default;
+paste your own free [Groq key](https://console.groq.com/keys) into the "🔑 AI
+features" panel in the sidebar to turn them on for your session only.
 
-<iframe src="STREAMLIT_APP_URL" width="100%" height="800px" style="border:1px solid #ddd;"></iframe>
+<iframe src="https://marketing-retail-ai-dashboard.streamlit.app/?embed=true" width="100%" height="800px" style="border:1px solid #ddd;"></iframe>
 
-[Open dashboard in a new tab ↗](STREAMLIT_APP_URL){target="_blank"}
-
-Deploy without setting the GROQ_API_KEY secret so the dashboard is safe to
-embed publicly — every chart, forecast, and recommendation works fully
-without it; only the AI Q&A panels show a graceful "add your own key"
-message instead of calling out to Groq on a random visitor's behalf. -->
+[Open dashboard in a new tab ↗](https://marketing-retail-ai-dashboard.streamlit.app/){target="_blank"}
 
 ## Code
 
