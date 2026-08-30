@@ -11,9 +11,12 @@ project:
 website:
   title: "Adam Hrehovcik"
   description: "Data & Business Analytics — projects, reports, and code"
-  site-url: "https://adamhrehovcik.github.io"   # TODO: update to your actual GitHub Pages URL or custom domain
+  site-url: "https://adamhrehovcik.github.io"
 
   navbar:
+    title: false   # "Adam Hrehovcik" already sits directly under the navbar on the homepage -- redundant here
+    background: "#2c3e50"
+    foreground: "#ffffff"
     left:
       - href: index.qmd
         text: Home
@@ -24,13 +27,13 @@ website:
           - href: business-analytics.qmd
             text: Data & Business Analytics
       - href: about.qmd
-        text: About
+        text: About Me
     right:
       - icon: linkedin
         href: https://www.linkedin.com/in/adam-hrehovcik/
         aria-label: LinkedIn
       - icon: github
-        href: https://github.com/YOUR-GITHUB-USERNAME   # TODO: update
+        href: https://github.com/AdamHrehovcik
         aria-label: GitHub
       - icon: envelope
         href: mailto:adam.hrehovcik@gmail.com

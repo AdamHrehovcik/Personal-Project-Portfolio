@@ -3,7 +3,7 @@ title: "Hotel Booking Cancellation & Revenue Analysis"
 description: "Identifying what drives cancellations and how booking behaviour, pricing, and stay patterns differ by country, to inform country-specific hotel marketing strategy."
 date: 2026-02-03
 categories: [Report, Code, Academic, R, tidyverse, Data Visualisation]
-image: images/hotel-analysis-thumb.png   # TODO: add a screenshot/chart export, ~800x450px
+image: images/hotel-analysis-thumb.png
 ---
 
 *This page is the original R source, re-executed on every site build — not a
@@ -22,6 +22,7 @@ marketing recommendations rather than a generic dashboard.
 #| message: false
 
 library(tidyverse)
+library(gt)
 data <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-02-11/hotels.csv")
 ```
 
@@ -37,8 +38,12 @@ resort_hotel = filter(data, hotel == "Resort Hotel")
 cancel_rate_city = mean(city_hotel$is_canceled, na.rm = T)
 cancel_rate_res = mean(resort_hotel$is_canceled, na.rm = T)
 
-print(paste("City Hotel cancelation rate:", round(cancel_rate_city, 3)))
-print(paste("Resort Hotel cancelation rate:", round(cancel_rate_res, 3)))
+tibble(Hotel = c("City Hotel", "Resort Hotel"),
+       `Cancellation rate` = c(cancel_rate_city, cancel_rate_res)) %>%
+  gt() %>%
+  fmt_percent(`Cancellation rate`, decimals = 1) %>%
+  tab_options(table.font.size = px(13), column_labels.font.weight = "bold",
+              table_body.hlines.width = px(0), table.width = pct(55))
 ```
 
 The City Hotel has a cancellation rate of 41.7%, compared to 27.8% for the Resort Hotel, meaning that City Hotel is 1.5 times more likely to have its booking cancelled.
@@ -47,10 +52,16 @@ This difference could reflect the possibility that the two hotels attract differ
 ### Lead time vs. cancellation
 
 ```{r}
-cor(data$lead_time, data$is_canceled)
+cat("Correlation (lead_time, is_canceled):", round(cor(data$lead_time, data$is_canceled), 3))
 
 data %>% group_by(is_canceled) %>%
-  summarise(lead_by_cancelation = mean(lead_time))
+  summarise(`Mean lead time (days)` = mean(lead_time)) %>%
+  mutate(is_canceled = if_else(is_canceled == 1, "Cancelled", "Not Cancelled")) %>%
+  rename(`Booking status` = is_canceled) %>%
+  gt() %>%
+  fmt_number(`Mean lead time (days)`, decimals = 1) %>%
+  tab_options(table.font.size = px(13), column_labels.font.weight = "bold",
+              table_body.hlines.width = px(0), table.width = pct(55))
 ```
 
 ```{r}
@@ -71,7 +82,13 @@ Overall, the evidence suggests that longer lead times are associated with increa
 data = data %>% mutate(has_special_req = case_when(total_of_special_requests > 0 ~ 1, TRUE ~ 0))
 
 data %>% group_by(has_special_req) %>%
-  summarise(cancel_rate = mean(is_canceled, na.rm = T))
+  summarise(`Cancellation rate` = mean(is_canceled, na.rm = T)) %>%
+  mutate(has_special_req = if_else(has_special_req == 1, "Has special request(s)", "No special requests")) %>%
+  rename(`Booking type` = has_special_req) %>%
+  gt() %>%
+  fmt_percent(`Cancellation rate`, decimals = 1) %>%
+  tab_options(table.font.size = px(13), column_labels.font.weight = "bold",
+              table_body.hlines.width = px(0), table.width = pct(55))
 ```
 
 ```{r}
@@ -93,7 +110,13 @@ The visualisation further shows a downward trend in cancellation rates as the nu
 data = data %>% mutate(changed_booking = case_when(booking_changes > 0 ~ 1, TRUE ~ 0))
 
 data %>% group_by(changed_booking) %>%
-  summarise(cancel_rate = mean(is_canceled, na.rm = T))
+  summarise(`Cancellation rate` = mean(is_canceled, na.rm = T)) %>%
+  mutate(changed_booking = if_else(changed_booking == 1, "Modified booking", "No modifications")) %>%
+  rename(`Booking type` = changed_booking) %>%
+  gt() %>%
+  fmt_percent(`Cancellation rate`, decimals = 1) %>%
+  tab_options(table.font.size = px(13), column_labels.font.weight = "bold",
+              table_body.hlines.width = px(0), table.width = pct(55))
 ```
 
 ```{r}
@@ -232,7 +255,6 @@ The central research question guiding this analysis is: how do booking behaviour
 
 ```{r}
 #| echo: false
-library(gt)
 
 city_table <- data %>%
   filter(hotel == "City Hotel") %>%

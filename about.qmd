@@ -1,41 +1,87 @@
 ---
-title: "About"
+title: "About Me"
 page-layout: article
 toc: false
 ---
 
 ::: {.about-layout}
 
-<!-- TODO: add a headshot to /images/headshot.jpg and uncomment
-![](images/headshot.jpg){.about-photo}
--->
-
 ## Background
 
-<!--
-TODO: 2-3 short paragraphs. Suggested shape, not a template to fill word for
-word — write it in your own voice:
+My background combines business and analytics in an interesting way. My
+undergraduate degree was in Finance at the University of Warwick, and I
+started out in traditional finance, with work experience in private equity,
+M&A, and restructuring. Over time, though, I got increasingly pulled toward
+the quantitative and technical side of decision-making, actually figuring
+out what the data said rather than just presenting it. That pull is what
+brought me to an MSc in Business Analytics & AI at Imperial College London,
+an internship at leading digital and AI-focused consultancy OMMAX, and now
+to scaling new products from the ground up at Revolut New Bets.
 
-1. Who you are + what you're doing now (MSc Business Analytics @ Imperial,
-   joining Revolut Sep 2026 as Graduate Operations Manager, GlobalHire).
-2. What kind of work you gravitate toward (the throughline across your
-   projects — e.g. turning messy data into a decision someone can act on).
-3. One sentence on background: Warwick BSc, EY, Smokestack, Sora Capital —
-   don't just restate the CV, say what you took from it.
--->
+The projects on this site largely illustrate what I enjoy about ML and
+data science. Asking difficult questions, making bold hypotheses, and
+gaining slightly better understanding of the world around us, datapoint by
+datapoint.
+
+## Experience
+
+**Revolut**, London, UK | Sep 2026 – present
+<br>*Operations Manager, New Bets*
+
+- Just starting out here, about to build something great, more to come as the role takes shape.
+
+**OMMAX**, London, UK | Jul 2026 – Aug 2026
+<br>*Transaction Advisory & Strategy Intern*
+
+- Built a modular AI maturity assessment framework (AI360) for private-equity clients, reconciling reported figures against underlying web and app performance data to surface inconsistencies and inform evidence-based recommendations.
+
+**Ernst & Young**, Prague, Czech Republic | Aug 2024 – Sep 2024
+<br>*M&A Due Diligence Intern*
+
+- Consolidated multi-entity financial data into analysis-ready models to isolate regulatory and non-recurring EBITDA impacts, informing a 10% valuation adjustment and SPA renegotiation, and built scenario-based profitability simulations for an asset carve-out.
+
+**Ernst & Young**, Prague, Czech Republic | Jul 2023 – Sep 2023
+<br>*Corporate Debt Advisory Intern*
+
+- Evaluated a resort business's solvency through liquidity analysis and stress testing, developed a restructuring plan cutting operating costs by 15%, and built a SARIMA forecasting model in Python to independently validate management's revenue projections.
+
+**Smokestack**, Prague, Czech Republic | Jan 2023 – May 2023
+<br>*Private Equity Intern*
+
+- Analysed company and market data to guide portfolio expansion strategy, synthesised investment briefs that informed a non-binding offer to a shortlisted target, and evaluated add-on acquisitions in the CRO sector for strategic fit and LBO impact.
 
 ## Education
 
-**Imperial College London** — MSc Business Analytics (Sep 2025 – Aug 2026)
-Imperial Excellence Scholar
+**Imperial College London**, MSc Business Analytics & AI (Sep 2025 – Aug 2026)
 
-**Warwick Business School** — BSc Management with Finance, First-Class Honours
-Ranked 3rd in graduating cohort
+- Imperial Excellence Scholar
+
+**Warwick Business School**, BSc Management with Finance (Sep 2022 – Jun 2025), First-Class Honours
+
+- Ranked 3rd in graduating cohort
+- Warwick Global Excellence Scholar
+
+## What I work with
+
+- **Domains**: time series forecasting, NLP & embeddings, portfolio optimization, causal inference, marketing mix & pricing analytics, investment & financial analytics
+- **Modelling**: LightGBM, XGBoost, neural networks & deep learning (LSTM, PyTorch, TensorFlow), large language models, Monte Carlo simulation, regression & classification, linear/integer programming
+- **Languages & tools**: Python (NumPy, pandas, scikit-learn, TensorFlow, PyTorch, SciPy), R (tidyverse, ggplot2), SQL, Streamlit, Tableau, Excel, Git
+
+See it applied on the [Machine Learning & Data Science](machine-learning.qmd)
+and [Data & Business Analytics](business-analytics.qmd) project pages.
+
+## Outside work
+
+Outside of work, I enjoy practising martial arts, which I have been doing
+for over 12 years now, holding a black belt, and spend as much time as I
+can outdoors, especially running or hiking mountain trails. I'm also a
+keen chess player, and when I get the chance to read for pleasure, I lean
+toward physics and ancient history.
 
 ## Elsewhere
 
 - [LinkedIn](https://www.linkedin.com/in/adam-hrehovcik/)
-- [GitHub](https://github.com/YOUR-GITHUB-USERNAME) <!-- TODO -->
-- [CV (PDF)](files/Adam_Hrehovcik_CV.pdf) <!-- TODO: drop your CV PDF into /files -->
+- [GitHub](https://github.com/AdamHrehovcik)
+- [CV (PDF)](files/Adam_Hrehovcik_CV.pdf)
 
 :::

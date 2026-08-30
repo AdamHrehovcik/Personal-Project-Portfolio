@@ -1,17 +1,86 @@
 /* Minimal custom styling on top of the Cosmo theme.
    Delete anything you don't want — this is intentionally light-touch. */
 
-.hero {
-  padding: 3rem 0 2rem 0;
+/* index.qmd sets title: "" -- Quarto still renders a title-block header
+   above the content either way. IMPORTANT: the homepage's name is a styled
+   <div class="hero-name">, not a markdown "# heading" -- Quarto promotes the
+   document's first H1 into this title-block when title is empty, which
+   silently hoists it above (and outside) .hero entirely. Keep it a div. This
+   rule is a safety net for whenever the title-block does end up empty;
+   :empty only matches when there's no title text, so it's automatically
+   scoped to pages like this one and doesn't touch titled pages elsewhere. */
+h1.title:empty {
+  display: none;
 }
 
-.hero h1 {
+#title-block-header:has(h1.title:empty) {
+  margin: 0;
+  padding: 0;
+}
+
+.hero {
+  padding: 0.6rem 0 0.1rem 0;
+  margin-top: 0.6rem;
+}
+
+.hero-flex {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.hero-text {
+  flex: 1 1 420px;
+}
+
+.hero-photo {
+  flex-shrink: 0;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background-color: #eef1f4;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-photo span {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #9aa5b5;
+  letter-spacing: 0.02em;
+}
+
+.hero-name {
   font-size: 2.4rem;
-  margin-bottom: 0.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.15rem;
+  color: #1c2733;
+}
+
+.hero h3 {
+  margin-top: 0;
+  margin-bottom: 0.6rem;
+}
+
+.hero p {
+  margin-bottom: 0.6rem;
 }
 
 .hero-buttons {
-  margin-top: 1.5rem;
+  margin-top: 0.9rem;
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
@@ -37,13 +106,145 @@
   max-width: 700px;
 }
 
-.about-photo {
-  width: 160px;
-  border-radius: 50%;
-  margin-bottom: 1rem;
+/* Homepage "about me" teaser box -- kept compact on purpose so the hero +
+   this box fit in one viewport without scrolling on a typical laptop screen. */
+.about-box {
+  max-width: 700px;
+  margin: 0.8rem 0 0.8rem 0;
+  padding: 1rem 1.5rem;
+  background-color: #f7f8fa;
+  border-left: 3px solid #2c3e50;
+  border-radius: 6px;
 }
 
-/* Project listing cards */
-.quarto-grid-item .card-title {
+.about-box h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.about-box p {
+  color: #414b5a;
+  line-height: 1.5;
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+}
+
+.about-box p:last-of-type {
+  margin-bottom: 0;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* ============================================================
+   Project cards (machine-learning.qmd / business-analytics.qmd grids)
+   ============================================================ */
+
+.quarto-grid-link {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.quarto-grid-item.card {
+  height: 100%;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.quarto-grid-link:hover .quarto-grid-item.card {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 28px rgba(15, 23, 42, 0.12), 0 4px 10px rgba(15, 23, 42, 0.06);
+}
+
+/* Thumbnails are repurposed full-size chart exports with wildly different
+   aspect ratios -- object-fit keeps every card the same shape without
+   stretching/squashing whichever image happens to be wide, tall, or square. */
+.quarto-grid-item .card-img-top {
+  margin: 0;
+  overflow: hidden;
+  background-color: #eef1f4;
+}
+
+.quarto-grid-item .thumbnail-image.card-img {
+  height: 190px !important;
+  width: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.3s ease;
+}
+
+.quarto-grid-link:hover .thumbnail-image.card-img {
+  transform: scale(1.045);
+}
+
+.quarto-grid-item .card-body.post-contents {
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem 1.25rem 1rem;
+}
+
+.quarto-grid-item .card-title.listing-title {
+  order: 1;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 0.5rem;
+  color: #1c2733;
+}
+
+.quarto-grid-item .listing-description {
+  order: 2;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #566072;
+  margin-bottom: 0.85rem;
+  /* Clamp to 3 lines so cards with long vs. short descriptions still align */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.quarto-grid-item .listing-categories {
+  order: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.32rem;
+  margin-bottom: 0.7rem;
+}
+
+/* Some projects carry 7-8 tags -- past the 4th, they're long-tail domain
+   detail rather than the structural Format/Code/Context tags every project
+   leads with, so hiding them here keeps the card scannable without losing
+   them from the actual filter chips on the listing page itself. */
+.quarto-grid-item .listing-category:nth-child(n + 5) {
+  display: none;
+}
+
+.quarto-grid-item .listing-category {
+  font-size: 0.68rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  background-color: #eef2f6;
+  color: #47536b;
+}
+
+.quarto-grid-item .listing-category:hover {
+  background-color: #e0e7ee;
+}
+
+.quarto-grid-item .card-attribution {
+  order: 4;
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 1px solid #eef1f4;
+  font-size: 0.78rem;
+  color: #8a94a3;
 }

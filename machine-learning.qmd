@@ -7,6 +7,7 @@ listing:
     - projects/energy-forecasting.qmd
     - projects/movie-review-generator.qmd
     - projects/citation-prediction-nlp.qmd
+    - projects/international-diversification.qmd
   type: grid
   grid-columns: 3
   image-height: 180px

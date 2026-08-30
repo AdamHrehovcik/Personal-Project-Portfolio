@@ -7,13 +7,9 @@
 
 **/*.quarto_ipynb
 
-# Raw course/competition datasets — not ours to redistribute publicly
-/Forecasting Competition - Data - 2026_20.xlsx
-
-# Trained model weights — too large for a public GitHub Pages repo (65MB);
-# the notebook + code snippets on the project page are the shareable artifact
-/my_final_model.keras
-
-# Original team slide deck — content is already on the NLP project page,
-# no need to republish the raw file (and it's a team deliverable, not solely mine)
-/Text Analysis for Business - Group L.pptx
+# Local-only source material that shouldn't be published: commercially
+# licensed data (MSCI/FX, the energy forecasting competition dataset), a
+# trained model too large for a public repo (65MB), and a team slide deck
+# whose content already lives on the NLP project page. Kept locally for
+# anyone re-running the notebooks, never committed.
+/_source-data/

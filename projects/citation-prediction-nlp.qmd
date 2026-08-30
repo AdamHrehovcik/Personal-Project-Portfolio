@@ -1,7 +1,7 @@
 ---
 title: "Predicting Paper Success & Tracing the Spread of Computational Thinking"
 description: "Text analysis of 889K paper abstracts — citation prediction, semantic drift, and transfer learning across scientific disciplines. Team project; write-up scoped to my contribution."
-date: 2026-04-01   # TODO: confirm actual date
+date: 2026-04-17
 categories: [Report, Code, Academic, Python, NLP, Embeddings, PCA]
 image: images/nlp-thumb.png
 ---

@@ -2,25 +2,22 @@
 title: ""
 page-layout: full
 toc: false
+code-tools: false
 ---
 
 ::: {.hero}
+::: {.hero-flex}
+::: {.hero-text}
 
-# Adam Hrehovcik
+<div class="hero-name">Adam Hrehovcik</div>
 
-### Data & Business Analytics
+### Machine Learning, Data Science & Business Analytics
 
-<!--
-TODO: 2-3 sentence intro. Keep it concrete, not generic — say what kind of
-problems you actually work on (e.g. "I build analyses and tools that turn
-messy data into decisions — pricing, demand forecasting, and customer
-behaviour, mostly in Python and R.") rather than a list of adjectives.
--->
-
-I'm an MSc Business Analytics student at Imperial College London, currently
-joining Revolut as a Graduate Operations Manager. This site collects the
-analytical projects and reports I've built — the full write-ups, the code
-behind them, and what I actually found.
+I've just completed an MSc Business Analytics & AI at Imperial College
+London, currently joining Revolut as Operations Manager. This is a
+collection of data science related projects and reports I've worked on,
+with the full reports on what I did, the code behind my work, and what I
+actually found.
 
 <div class="hero-buttons">
 [Machine Learning Projects →](machine-learning.qmd){.btn-hero}
@@ -31,16 +28,26 @@ behind them, and what I actually found.
 
 :::
 
-<!--
-TODO: consider a short "Featured" section here — 2-3 project cards for your
-strongest work (e.g. retail dashboard, hotel booking analysis) so a visitor
-doesn't have to click through to /projects to see your best material.
-Quarto listing shortcode example:
+<div class="hero-photo">
+<img src="images/headshot.jpg" alt="Adam Hrehovcik">
+</div>
 
-## Featured
-
-::: {#featured-listing}
+:::
 :::
 
-with a matching listing block in _quarto.yml or a separate featured.qmd
--->
+::: {.about-box}
+
+## A bit about me
+
+My background combines business and analytics in an interesting way. Since
+my undergraduate degree was in Finance at the University of Warwick, I
+started in traditional finance, with work experience in private equity,
+M&A, and restructuring. However, I got increasingly pulled towards the
+quantitative and technical side of decision-making. That's what brought me
+to an MSc in Business Analytics, an internship at leading digital and
+AI-focused consultancy OMMAX, and finally to scaling new products from the
+ground up at Revolut New Bets.
+
+[Read the full story →](about.qmd)
+
+:::
