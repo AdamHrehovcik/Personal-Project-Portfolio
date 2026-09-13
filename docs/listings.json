@@ -1,18 +1,19 @@
 [
   {
-    "listing": "/machine-learning.html",
-    "items": [
-      "/projects/energy-forecasting.html",
-      "/projects/citation-prediction-nlp.html",
-      "/projects/movie-review-generator.html",
-      "/projects/international-diversification.html"
-    ]
-  },
-  {
     "listing": "/business-analytics.html",
     "items": [
       "/projects/retail-dashboard.html",
       "/projects/hotel-booking-analysis.html"
+    ]
+  },
+  {
+    "listing": "/machine-learning.html",
+    "items": [
+      "/projects/portfolio-monitoring-agent.html",
+      "/projects/energy-forecasting.html",
+      "/projects/citation-prediction-nlp.html",
+      "/projects/movie-review-generator.html",
+      "/projects/international-diversification.html"
     ]
   }
 ]

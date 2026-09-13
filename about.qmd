@@ -82,6 +82,6 @@ toward physics and ancient history.
 
 - [LinkedIn](https://www.linkedin.com/in/adam-hrehovcik/)
 - [GitHub](https://github.com/AdamHrehovcik)
-- [CV (PDF)](files/Adam_Hrehovcik_CV.pdf)
+- [CV (PDF)](files/cv/Adam_Hrehovcik_CV.pdf)
 
 :::

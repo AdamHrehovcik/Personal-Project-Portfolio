@@ -11,7 +11,7 @@ project:
 website:
   title: "Adam Hrehovcik"
   description: "Data & Business Analytics — projects, reports, and code"
-  site-url: "https://adamhrehovcik.github.io"
+  site-url: "https://adamhrehovcik.github.io/Personal-Project-Portfolio"
 
   navbar:
     title: false   # "Adam Hrehovcik" already sits directly under the navbar on the homepage -- redundant here

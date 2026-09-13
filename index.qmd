@@ -22,7 +22,7 @@ actually found.
 <div class="hero-buttons">
 [Machine Learning Projects →](machine-learning.qmd){.btn-hero}
 [Business Analytics Projects →](business-analytics.qmd){.btn-hero}
-[Download CV](files/Adam_Hrehovcik_CV.pdf){.btn-hero .btn-hero-outline}
+[Download CV](files/cv/Adam_Hrehovcik_CV.pdf){.btn-hero .btn-hero-outline}
 [LinkedIn ↗](https://www.linkedin.com/in/adam-hrehovcik/){.btn-hero .btn-hero-outline target="_blank"}
 </div>
 

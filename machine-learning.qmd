@@ -4,6 +4,7 @@ page-layout: full
 title-block-banner: false
 listing:
   contents:
+    - projects/portfolio-monitoring-agent.qmd
     - projects/energy-forecasting.qmd
     - projects/movie-review-generator.qmd
     - projects/citation-prediction-nlp.qmd
